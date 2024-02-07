@@ -1,0 +1,155 @@
+﻿using TravelCompanyContracts.BindingModels;
+using TravelCompanyContracts.BusinessLogicsContracts;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace TravelCompany.Forms
+{
+    public partial class FormMain : Form
+    {
+        private readonly ILogger _logger;
+        private readonly IOrderLogic _orderLogic;
+        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic)
+        {
+            InitializeComponent();
+            _logger = logger;
+            _orderLogic = orderLogic;
+        }
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+        private void LoadData()
+        {
+            _logger.LogInformation("Загрузка заказов");
+            try
+            {
+                var list = _orderLogic.ReadList(null);
+
+                if (list != null)
+                {
+                    dataGridView.DataSource = list;
+                    dataGridView.Columns["TravelId"].Visible = false;
+                    dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                }
+
+                _logger.LogInformation("Загрузка заказов");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка загрузки заказов");
+            }
+        }
+        private void компонентыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormComponents));
+            if (service is FormComponents form)
+            {
+                form.ShowDialog();
+            }
+        }
+        private void консервыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormTravels));
+
+            if (service is FormTravels form)
+            {
+                form.ShowDialog();
+            }
+        }
+        private void buttonCreateOrder_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormCreateOrder));
+            if (service is FormCreateOrder form)
+            {
+                form.ShowDialog();
+                LoadData();
+            }
+        }
+        private void buttonTakeOrderInWork_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 1)
+            {
+                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                _logger.LogInformation("Заказ №{id}. Меняется статус на 'В работе'", id);
+                try
+                {
+                    var operationResult = _orderLogic.TakeOrderInWork(new OrderBindingModel
+                    {
+                        Id = id,
+                    });
+                    if (!operationResult)
+                    {
+                        throw new Exception("Ошибка при сохранении. Дополнительная информация в логах.");
+                    }
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Ошибка передачи заказа в работу");
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void buttonOrderReady_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 1)
+            {
+                int id =
+               Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                _logger.LogInformation("Заказ №{id}. Меняется статус на 'Готов'", id);
+                try
+                {
+                    var operationResult = _orderLogic.FinishOrder(new OrderBindingModel { Id = id });
+                    if (!operationResult)
+                    {
+                        throw new Exception("Ошибка при сохранении. Дополнительная информация в логах.");
+                    }
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Ошибка отметки о готовности заказа");
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void buttonIssuedOrder_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 1)
+            {
+                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                _logger.LogInformation("Заказ №{id}. Меняется статус на 'Выдан'", id);
+                try
+                {
+                    var operationResult = _orderLogic.DeliveryOrder(new OrderBindingModel
+                    {
+                        Id = id
+                    });
+                    if (!operationResult)
+                    {
+                        throw new Exception("Ошибка при сохранении. Дополнительная информация в логах.");
+                    }
+                    _logger.LogInformation("Заказ №{id} выдан", id);
+                    LoadData();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Ошибка отметки о выдачи заказа"); MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+        private void buttonRef_Click(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+    }
+}
