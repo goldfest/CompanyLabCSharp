@@ -66,14 +66,14 @@
             // компонентыToolStripMenuItem
             // 
             компонентыToolStripMenuItem.Name = "компонентыToolStripMenuItem";
-            компонентыToolStripMenuItem.Size = new Size(180, 22);
+            компонентыToolStripMenuItem.Size = new Size(174, 22);
             компонентыToolStripMenuItem.Text = "Компоненты";
             компонентыToolStripMenuItem.Click += компонентыToolStripMenuItem_Click;
             // 
             // ПутёвкиToolStripMenuItem
             // 
             ПутёвкиToolStripMenuItem.Name = "ПутёвкиToolStripMenuItem";
-            ПутёвкиToolStripMenuItem.Size = new Size(180, 22);
+            ПутёвкиToolStripMenuItem.Size = new Size(174, 22);
             ПутёвкиToolStripMenuItem.Text = "Туристич. путёвки";
             ПутёвкиToolStripMenuItem.Click += консервыToolStripMenuItem_Click;
             // 
@@ -152,7 +152,7 @@
             Controls.Add(buttonCreateOrder);
             Controls.Add(toolStrip1);
             Name = "FormMain";
-            Text = "Рыбный завод";
+            Text = "Туристическая фирма";
             Load += FormMain_Load;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
