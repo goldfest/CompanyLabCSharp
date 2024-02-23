@@ -42,7 +42,7 @@ namespace TravelCompany.Forms
                     dataGridView.Columns["TravelComponents"].Visible = false;
                     dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
-                _logger.LogInformation("Загрузка консерв");
+                _logger.LogInformation("Загрузка путёвок");
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace TravelCompany.Forms
                 {
                     int id =
                    Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    _logger.LogInformation("Удаление консервы");
+                    _logger.LogInformation("Удаление путёвок");
                     try
                     {
                         if (!_logic.Delete(new TravelBindingModel
@@ -100,7 +100,7 @@ namespace TravelCompany.Forms
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Ошибка удаления консервы");
+                        _logger.LogError(ex, "Ошибка удаления путевки");
                         MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
