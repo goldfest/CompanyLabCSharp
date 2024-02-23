@@ -10,16 +10,19 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+    <PackageReference Include="NLog" Version="5.2.8" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TravelCompanyBusinessLogic\TravelCompanyBusinessLogic.csproj" />
     <ProjectReference Include="..\TravelCompanyContracts\TravelCompanyContracts.csproj" />
+    <ProjectReference Include="..\TravelCompanyFileImplement\TravelCompanyFileImplement.csproj" />
     <ProjectReference Include="..\TravelCompanyListImplement\TravelCompanyListImplement.csproj" />
   </ItemGroup>
 

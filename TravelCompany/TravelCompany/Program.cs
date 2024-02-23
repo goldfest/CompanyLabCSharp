@@ -1,13 +1,13 @@
-using TravelCompany.Forms;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyBusinessLogic.BusinessLogic;
 using TravelCompanyContracts.StoragesContracts;
-using TravelCompanyListImplement.Implements;
+using TravelCompanyFileImplement.Implements;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
-namespace TravelCompany
+
+namespace TravelCompany.Forms
 {
     internal static class Program
     {
@@ -38,9 +38,11 @@ namespace TravelCompany
             services.AddTransient<IComponentStorage, ComponentStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<ITravelStorage, TravelStorage>();
+
             services.AddTransient<IComponentLogic, ComponentLogic>();
             services.AddTransient<IOrderLogic, OrderLogic>();
             services.AddTransient<ITravelLogic, TravelLogic>();
+
             services.AddTransient<FormMain>();
             services.AddTransient<FormComponent>();
             services.AddTransient<FormComponents>();
