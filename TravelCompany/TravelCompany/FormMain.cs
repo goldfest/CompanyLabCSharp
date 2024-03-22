@@ -160,7 +160,7 @@ namespace TravelCompany.Forms
             using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                _reportLogic.SaveComponentsToWordFile(new ReportBindingModel
+                _reportLogic.SaveTravelsToWordFile(new ReportBindingModel
                 {
                     FileName = dialog.FileName
                 });

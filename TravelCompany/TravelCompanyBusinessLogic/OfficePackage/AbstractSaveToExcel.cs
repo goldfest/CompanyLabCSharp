@@ -32,11 +32,11 @@ namespace TravelCompanyBusinessLogic.OfficePackage
                 {
                     ColumnName = "A",
                     RowIndex = rowIndex,
-                    Text = pc.ComponentName,
+                    Text = pc.TravelName,
                     StyleInfo = ExcelStyleInfoType.Text
                 });
                 rowIndex++;
-                foreach (var Travel in pc.Travels)
+                foreach (var Travel in pc.Components)
                 {
                     InsertCellInWorksheet(new ExcelCellParameters
                     {

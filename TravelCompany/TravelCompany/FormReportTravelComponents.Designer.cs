@@ -72,7 +72,7 @@
             SaveButton.TabIndex = 1;
             SaveButton.Text = "Сохранить в Excel";
             SaveButton.UseVisualStyleBackColor = true;
-            SaveButton.Click += SaveButton_Click;
+            SaveButton.Click += ButtonSaveToExcel_Click;
             // 
             // ReportTravelComponentForm
             // 
@@ -83,7 +83,7 @@
             Controls.Add(dataGridView);
             Name = "ReportTravelComponentForm";
             Text = "Компоненты по мороженным";
-            Load += ReportTravelComponentForm_Load;
+            Load += FormReportTravelComponents_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
         }

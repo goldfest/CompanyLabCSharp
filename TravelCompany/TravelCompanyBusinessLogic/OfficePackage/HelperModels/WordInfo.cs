@@ -11,6 +11,6 @@ namespace TravelCompanyBusinessLogic.OfficePackage.HelperModels
     {
         public string FileName { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public List<ComponentViewModel> Components { get; set; } = new();
+        public List<TravelViewModel> Travels { get; set; } = new();
     }
 }

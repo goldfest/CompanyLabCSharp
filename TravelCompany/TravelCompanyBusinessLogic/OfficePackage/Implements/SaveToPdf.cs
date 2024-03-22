@@ -23,7 +23,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             {
                 PdfParagraphAlignmentType.Center => ParagraphAlignment.Center,
                 PdfParagraphAlignmentType.Left => ParagraphAlignment.Left,
-                PdfParagraphAlignmentType.Rigth => ParagraphAlignment.Right,
+                PdfParagraphAlignmentType.Right => ParagraphAlignment.Right,
                 _ => ParagraphAlignment.Justify,
             };
         }

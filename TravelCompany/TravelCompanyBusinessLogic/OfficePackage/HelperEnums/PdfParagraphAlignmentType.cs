@@ -10,6 +10,6 @@ namespace TravelCompanyBusinessLogic.OfficePackage.HelperEnums
     {
         Center,
         Left,
-        Rigth
+        Right
     }
 }

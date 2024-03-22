@@ -28,102 +28,110 @@
         /// </summary>
         private void InitializeComponent()
         {
-            panel = new Panel();
-            buttonCreateToPdf = new Button();
-            buttonCreateReport = new Button();
-            label2 = new Label();
-            label1 = new Label();
-            dateTimePickerFrom = new DateTimePicker();
-            dateTimePickerTo = new DateTimePicker();
-            panel.SuspendLayout();
-            SuspendLayout();
+            this.panel = new System.Windows.Forms.Panel();
+            this.buttonCreateToPdf = new System.Windows.Forms.Button();
+            this.buttonCreateReport = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
+            this.panel.SuspendLayout();
+            this.SuspendLayout();
             // 
             // panel
             // 
-            panel.Controls.Add(buttonCreateToPdf);
-            panel.Controls.Add(buttonCreateReport);
-            panel.Controls.Add(label2);
-            panel.Controls.Add(label1);
-            panel.Controls.Add(dateTimePickerFrom);
-            panel.Controls.Add(dateTimePickerTo);
-            panel.Location = new Point(12, 12);
-            panel.Name = "panel";
-            panel.Size = new Size(776, 43);
-            panel.TabIndex = 0;
+            this.panel.Controls.Add(this.buttonCreateToPdf);
+            this.panel.Controls.Add(this.buttonCreateReport);
+            this.panel.Controls.Add(this.label2);
+            this.panel.Controls.Add(this.label1);
+            this.panel.Controls.Add(this.dateTimePickerEnd);
+            this.panel.Controls.Add(this.dateTimePickerStart);
+            this.panel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel.Location = new System.Drawing.Point(0, 0);
+            this.panel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(861, 56);
+            this.panel.TabIndex = 0;
             // 
             // buttonCreateToPdf
             // 
-            buttonCreateToPdf.Location = new Point(623, 17);
-            buttonCreateToPdf.Name = "buttonCreateToPdf";
-            buttonCreateToPdf.Size = new Size(150, 23);
-            buttonCreateToPdf.TabIndex = 5;
-            buttonCreateToPdf.Text = "В Pdf";
-            buttonCreateToPdf.UseVisualStyleBackColor = true;
-            buttonCreateToPdf.Click += buttonCreateToPdf_Click;
+            this.buttonCreateToPdf.Location = new System.Drawing.Point(684, 29);
+            this.buttonCreateToPdf.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonCreateToPdf.Name = "buttonCreateToPdf";
+            this.buttonCreateToPdf.Size = new System.Drawing.Size(166, 23);
+            this.buttonCreateToPdf.TabIndex = 5;
+            this.buttonCreateToPdf.Text = "PDF";
+            this.buttonCreateToPdf.UseVisualStyleBackColor = true;
+            this.buttonCreateToPdf.Click += new System.EventHandler(this.buttonCreateToPdf_Click);
             // 
             // buttonCreateReport
             // 
-            buttonCreateReport.Location = new Point(470, 17);
-            buttonCreateReport.Name = "buttonCreateReport";
-            buttonCreateReport.Size = new Size(147, 23);
-            buttonCreateReport.TabIndex = 4;
-            buttonCreateReport.Text = "Сформировать";
-            buttonCreateReport.UseVisualStyleBackColor = true;
-            buttonCreateReport.Click += buttonCreateReport_Click;
+            this.buttonCreateReport.Location = new System.Drawing.Point(485, 29);
+            this.buttonCreateReport.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonCreateReport.Name = "buttonCreateReport";
+            this.buttonCreateReport.Size = new System.Drawing.Size(166, 23);
+            this.buttonCreateReport.TabIndex = 4;
+            this.buttonCreateReport.Text = "Сформировать";
+            this.buttonCreateReport.UseVisualStyleBackColor = true;
+            this.buttonCreateReport.Click += new System.EventHandler(this.buttonCreateReport_Click);
             // 
             // label2
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(235, 23);
-            label2.Name = "label2";
-            label2.Size = new Size(23, 15);
-            label2.TabIndex = 3;
-            label2.Text = "По";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(323, 7);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 15);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Конец:";
             // 
             // label1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(8, 23);
-            label1.Name = "label1";
-            label1.Size = new Size(15, 15);
-            label1.TabIndex = 2;
-            label1.Text = "С";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(76, 4);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 15);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Начало:";
             // 
-            // dateTimePickerFrom
+            // dateTimePickerEnd
             // 
-            dateTimePickerFrom.Location = new Point(29, 17);
-            dateTimePickerFrom.Name = "dateTimePickerFrom";
-            dateTimePickerFrom.Size = new Size(200, 23);
-            dateTimePickerFrom.TabIndex = 0;
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(269, 29);
+            this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(164, 23);
+            this.dateTimePickerEnd.TabIndex = 1;
             // 
-            // dateTimePickerTo
+            // dateTimePickerStart
             // 
-            dateTimePickerTo.Location = new Point(264, 17);
-            dateTimePickerTo.Name = "dateTimePickerTo";
-            dateTimePickerTo.Size = new Size(200, 23);
-            dateTimePickerTo.TabIndex = 1;
+            this.dateTimePickerStart.Location = new System.Drawing.Point(31, 29);
+            this.dateTimePickerStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dateTimePickerStart.Name = "dateTimePickerStart";
+            this.dateTimePickerStart.Size = new System.Drawing.Size(164, 23);
+            this.dateTimePickerStart.TabIndex = 0;
             // 
             // FormReportOrders
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(panel);
-            Name = "FormReportOrders";
-            Text = "Заказы";
-            panel.ResumeLayout(false);
-            panel.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(861, 338);
+            this.Controls.Add(this.panel);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Name = "FormReportOrders";
+            this.Text = "Заказы";
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
 
         private Panel panel;
+        private DateTimePicker dateTimePickerEnd;
+        private DateTimePicker dateTimePickerStart;
         private Button buttonCreateToPdf;
         private Button buttonCreateReport;
         private Label label2;
         private Label label1;
-        private DateTimePicker dateTimePickerFrom;
-        private DateTimePicker dateTimePickerTo;
     }
 }

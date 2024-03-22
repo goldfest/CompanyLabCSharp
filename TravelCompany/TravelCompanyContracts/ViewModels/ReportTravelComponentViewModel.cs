@@ -8,9 +8,10 @@ namespace TravelCompanyContracts.ViewModels
 {
     public class ReportTravelComponentViewModel
     {
-        public string ComponentName { get; set; } = string.Empty;
+        public string TravelName { get; set; } = string.Empty;
         public int TotalCount { get; set; }
-        public List<Tuple<string, int>> Travels { get; set; } = new();
+        public List<(string Component, int Count)> Components { get; set; } = new();
+
 
     }
 }

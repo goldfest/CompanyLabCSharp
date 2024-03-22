@@ -10,9 +10,9 @@ namespace TravelCompanyContracts.BusinessLogicsContracts
 {
     public interface IReportLogic
     {
-        List<ReportTravelComponentViewModel> GetTravelComponent();
+        List<ReportTravelComponentViewModel> GetTravelComponents();
         List<ReportOrdersViewModel> GetOrders(ReportBindingModel model);
-        void SaveComponentsToWordFile(ReportBindingModel model);
+        void SaveTravelsToWordFile(ReportBindingModel model);
         void SaveTravelComponentToExcelFile(ReportBindingModel model);
         void SaveOrdersToPdfFile(ReportBindingModel model);
     }

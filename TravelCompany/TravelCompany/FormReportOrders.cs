@@ -11,8 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TravelCompanyContracts.BindingModels;
-using TravelCompanyContracts.BusinessLogicsContracts;
 
 namespace TravelCompany.Forms
 {
@@ -31,10 +29,7 @@ namespace TravelCompany.Forms
             {
                 Dock = DockStyle.Fill
             };
-            using (var fileStream = new FileStream("C:\\Users\\goldfest\\Desktop\\RPP\\TravelCompany\\TravelCompany\\ReportOrders.rdlc", FileMode.Open))
-            {
-                reportViewer.LocalReport.LoadReportDefinition(fileStream);
-            }
+            reportViewer.LocalReport.LoadReportDefinition(new FileStream("C:\\Users\\goldfest\\Desktop\\TravelCompany\\PrecastConcretePlant\\PrecastConcretePlantView\\ReportOrders.rdlc", FileMode.Open));
             Controls.Clear();
             Controls.Add(reportViewer);
             Controls.Add(panel);
@@ -42,7 +37,7 @@ namespace TravelCompany.Forms
 
         private void buttonCreateReport_Click(object sender, EventArgs e)
         {
-            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
+            if (dateTimePickerStart.Value.Date >= dateTimePickerEnd.Value.Date)
             {
                 MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -51,16 +46,16 @@ namespace TravelCompany.Forms
             {
                 var dataSource = _logic.GetOrders(new ReportBindingModel
                 {
-                    DateFrom = dateTimePickerFrom.Value,
-                    DateTo = dateTimePickerTo.Value
+                    DateFrom = dateTimePickerStart.Value,
+                    DateTo = dateTimePickerEnd.Value
                 });
                 var source = new ReportDataSource("DataSetOrders", dataSource);
                 reportViewer.LocalReport.DataSources.Clear();
                 reportViewer.LocalReport.DataSources.Add(source);
-                var parameters = new[] { new ReportParameter("ReportParameterPeriod", $"c{dateTimePickerFrom.Value.ToShortDateString()} по {dateTimePickerTo.Value.ToShortDateString()}") };
+                var parameters = new[] { new ReportParameter("ReportParameterPeriod", $"c{dateTimePickerStart.Value.ToShortDateString()} по {dateTimePickerEnd.Value.ToShortDateString()}") };
                 reportViewer.LocalReport.SetParameters(parameters);
                 reportViewer.RefreshReport();
-                _logger.LogInformation("Загрузка списка заказов на период {From}-{ To}", dateTimePickerFrom.Value.ToShortDateString(), dateTimePickerTo.Value.ToShortDateString());
+                _logger.LogInformation("Загрузка списка заказов на период {From}-{ To}", dateTimePickerStart.Value.ToShortDateString(), dateTimePickerEnd.Value.ToShortDateString());
             }
             catch (Exception ex)
             {
@@ -73,7 +68,7 @@ namespace TravelCompany.Forms
 
         private void buttonCreateToPdf_Click(object sender, EventArgs e)
         {
-            if (dateTimePickerFrom.Value.Date >= dateTimePickerTo.Value.Date)
+            if (dateTimePickerStart.Value.Date >= dateTimePickerEnd.Value.Date)
             {
                 MessageBox.Show("Дата начала должна быть меньше даты окончания", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -89,10 +84,10 @@ namespace TravelCompany.Forms
                     _logic.SaveOrdersToPdfFile(new ReportBindingModel
                     {
                         FileName = dialog.FileName,
-                        DateFrom = dateTimePickerFrom.Value,
-                        DateTo = dateTimePickerTo.Value
+                        DateFrom = dateTimePickerStart.Value,
+                        DateTo = dateTimePickerEnd.Value
                     });
-                    _logger.LogInformation("Сохранение списка заказов на период { From} -{ To}", dateTimePickerFrom.Value.ToShortDateString(), dateTimePickerTo.Value.ToShortDateString());
+                    _logger.LogInformation("Сохранение списка заказов на период { From} -{ To}", dateTimePickerStart.Value.ToShortDateString(), dateTimePickerEnd.Value.ToShortDateString());
                     MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)

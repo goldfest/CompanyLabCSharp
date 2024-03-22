@@ -1,6 +1,6 @@
-﻿using TravelCompanyContracts.BindingModels;
+﻿using Microsoft.Extensions.Logging;
+using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,78 +18,61 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly IReportLogic _logic;
 
-        public FormReportTravelComponents(ILogger<FormReportTravelComponents>
-logger, IReportLogic logic)
+        public FormReportTravelComponents(ILogger<FormReportTravelComponents> logger, IReportLogic logic)
         {
             InitializeComponent();
             _logger = logger;
             _logic = logic;
-
         }
 
-        private void ReportTravelComponentForm_Load(object sender, EventArgs e)
+        private void FormReportTravelComponents_Load(object sender, EventArgs e)
         {
             try
             {
-                var dict = _logic.GetTravelComponent();
+                var dict = _logic.GetTravelComponents();
                 if (dict != null)
                 {
                     dataGridView.Rows.Clear();
                     foreach (var elem in dict)
                     {
-                        dataGridView.Rows.Add(new object[] { elem.ComponentName,
-"", "" });
-                        foreach (var listElem in elem.Travels)
+                        dataGridView.Rows.Add(new object[] { elem.TravelName, "", "" });
+                        foreach (var listElem in elem.Components)
                         {
-                            dataGridView.Rows.Add(new object[] { "",
-listElem.Item1, listElem.Item2 });
+                            dataGridView.Rows.Add(new object[] { "", listElem.Item1, listElem.Item2 });
                         }
-                        dataGridView.Rows.Add(new object[] { "Итого", "",
-elem.TotalCount });
+                        dataGridView.Rows.Add(new object[] { "Итого", "", elem.TotalCount });
                         dataGridView.Rows.Add(Array.Empty<object>());
                     }
                 }
-                _logger.LogInformation("Загрузка списка мороженных по компонентам");
+                _logger.LogInformation("Загрузка списка изделий по компонентам");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка загрузки списка мороженных по компонентам");
-
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-               MessageBoxIcon.Error);
+                _logger.LogError(ex, "Ошибка загрузки списка изделий по компонентам");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        private void ButtonSaveToExcel_Click(object sender, EventArgs e)
         {
-            using var dialog = new SaveFileDialog
-            {
-                Filter = "xlsx|*.xlsx"
-            };
+            using var dialog = new SaveFileDialog { Filter = "xlsx|*.xlsx" };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    _logic.SaveTravelComponentToExcelFile(new
-                    ReportBindingModel
+                    _logic.SaveTravelComponentToExcelFile(new ReportBindingModel
                     {
                         FileName = dialog.FileName
                     });
-                    _logger.LogInformation("Сохранение списка мороженных по компонентам");
-                   
-                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
-                   MessageBoxIcon.Information);
+                    _logger.LogInformation("Сохранение списка изделий по компонентам");
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Ошибка сохранения списка мороженных по компонентам");
-                   
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
-                   MessageBoxIcon.Error);
+                    _logger.LogError(ex, "Ошибка сохранения списка изделий по компонентам");
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-
     }
 }
