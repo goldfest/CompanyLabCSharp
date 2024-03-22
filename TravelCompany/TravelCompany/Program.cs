@@ -6,6 +6,8 @@ using TravelCompanyListImplement.Implements;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using TravelCompanyView;
+using TravelCompanyBusinessLogic.BusinessLogics;
 
 namespace TravelCompany
 {
@@ -48,6 +50,11 @@ namespace TravelCompany
             services.AddTransient<FormTravel>();
             services.AddTransient<FormTravelComponent>();
             services.AddTransient<FormTravels>();
+            services.AddTransient<IShopStorage, ShopStorage>();
+            services.AddTransient<IShopLogic, ShopLogic>();
+            services.AddTransient<FormShop>();
+            services.AddTransient<FormShops>();
+            services.AddTransient<FormCreateSupply>();
         }
     }
 }

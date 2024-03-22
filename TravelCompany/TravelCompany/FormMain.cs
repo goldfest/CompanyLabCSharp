@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TravelCompanyView;
 
 namespace TravelCompany.Forms
 {
@@ -150,6 +151,24 @@ namespace TravelCompany.Forms
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void shopsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormShops));
+            if (service is FormShops form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void transactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormCreateSupply));
+            if (service is FormCreateSupply form)
+            {
+                form.ShowDialog();
+            }
         }
     }
 }

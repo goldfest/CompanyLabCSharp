@@ -30,15 +30,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             toolStrip1 = new ToolStrip();
-            toolStripDropDownButton1 = new ToolStripDropDownButton();
-            компонентыToolStripMenuItem = new ToolStripMenuItem();
-            ПутёвкиToolStripMenuItem = new ToolStripMenuItem();
             buttonCreateOrder = new Button();
             buttonTakeOrderInWork = new Button();
             buttonOrderReady = new Button();
             buttonIssuedOrder = new Button();
             buttonRef = new Button();
             dataGridView = new DataGridView();
+            operationToolStripMenuItem = new ToolStripMenuItem();
+            transactionToolStripMenuItem = new ToolStripMenuItem();
+            компонентыToolStripMenuItem = new ToolStripMenuItem();
+            ПутёвкиToolStripMenuItem = new ToolStripMenuItem();
+            магазиныToolStripMenuItem = new ToolStripMenuItem();
+            toolStripDropDownButton1 = new ToolStripDropDownButton();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -46,36 +49,12 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1 });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, operationToolStripMenuItem });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(969, 25);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripDropDownButton1
-            // 
-            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { компонентыToolStripMenuItem, ПутёвкиToolStripMenuItem });
-            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
-            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
-            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            toolStripDropDownButton1.Size = new Size(88, 22);
-            toolStripDropDownButton1.Text = "Справочник";
-            // 
-            // компонентыToolStripMenuItem
-            // 
-            компонентыToolStripMenuItem.Name = "компонентыToolStripMenuItem";
-            компонентыToolStripMenuItem.Size = new Size(174, 22);
-            компонентыToolStripMenuItem.Text = "Компоненты";
-            компонентыToolStripMenuItem.Click += компонентыToolStripMenuItem_Click;
-            // 
-            // ПутёвкиToolStripMenuItem
-            // 
-            ПутёвкиToolStripMenuItem.Name = "ПутёвкиToolStripMenuItem";
-            ПутёвкиToolStripMenuItem.Size = new Size(174, 22);
-            ПутёвкиToolStripMenuItem.Text = "Туристич. путёвки";
-            ПутёвкиToolStripMenuItem.Click += консервыToolStripMenuItem_Click;
             // 
             // buttonCreateOrder
             // 
@@ -139,6 +118,51 @@
             dataGridView.Size = new Size(763, 435);
             dataGridView.TabIndex = 6;
             // 
+            // operationToolStripMenuItem
+            // 
+            operationToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { transactionToolStripMenuItem });
+            operationToolStripMenuItem.Name = "operationToolStripMenuItem";
+            operationToolStripMenuItem.Size = new Size(75, 25);
+            operationToolStripMenuItem.Text = "Операции";
+            // 
+            // transactionToolStripMenuItem
+            // 
+            transactionToolStripMenuItem.Name = "transactionToolStripMenuItem";
+            transactionToolStripMenuItem.Size = new Size(180, 22);
+            transactionToolStripMenuItem.Text = "Поставка";
+            transactionToolStripMenuItem.Click += transactionToolStripMenuItem_Click;
+            // 
+            // компонентыToolStripMenuItem
+            // 
+            компонентыToolStripMenuItem.Name = "компонентыToolStripMenuItem";
+            компонентыToolStripMenuItem.Size = new Size(180, 22);
+            компонентыToolStripMenuItem.Text = "Компоненты";
+            компонентыToolStripMenuItem.Click += компонентыToolStripMenuItem_Click;
+            // 
+            // ПутёвкиToolStripMenuItem
+            // 
+            ПутёвкиToolStripMenuItem.Name = "ПутёвкиToolStripMenuItem";
+            ПутёвкиToolStripMenuItem.Size = new Size(180, 22);
+            ПутёвкиToolStripMenuItem.Text = "Туристич. путёвки";
+            ПутёвкиToolStripMenuItem.Click += консервыToolStripMenuItem_Click;
+            // 
+            // магазиныToolStripMenuItem
+            // 
+            магазиныToolStripMenuItem.Name = "магазиныToolStripMenuItem";
+            магазиныToolStripMenuItem.Size = new Size(180, 22);
+            магазиныToolStripMenuItem.Text = "Магазины";
+            магазиныToolStripMenuItem.Click += shopsToolStripMenuItem_Click;
+            // 
+            // toolStripDropDownButton1
+            // 
+            toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { компонентыToolStripMenuItem, ПутёвкиToolStripMenuItem, магазиныToolStripMenuItem });
+            toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
+            toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
+            toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            toolStripDropDownButton1.Size = new Size(88, 22);
+            toolStripDropDownButton1.Text = "Справочник";
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -173,5 +197,8 @@
         private ToolStripDropDownButton toolStripDropDownButton1;
         private ToolStripMenuItem компонентыToolStripMenuItem;
         private ToolStripMenuItem ПутёвкиToolStripMenuItem;
+        private ToolStripMenuItem магазиныToolStripMenuItem;
+        private ToolStripMenuItem operationToolStripMenuItem;
+        private ToolStripMenuItem transactionToolStripMenuItem;
     }
 }
