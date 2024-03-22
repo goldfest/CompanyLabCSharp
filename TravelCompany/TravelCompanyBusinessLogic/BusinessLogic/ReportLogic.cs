@@ -10,6 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelCompanyBusinessLogic.OfficePackage.HelperModels;
+using TravelCompanyBusinessLogic.OfficePackage;
+using TravelCompanyContracts.BindingModels;
+using TravelCompanyContracts.BusinessLogicsContracts;
+using TravelCompanyContracts.SearchModels;
+using TravelCompanyContracts.StoragesContracts;
+using TravelCompanyContracts.ViewModels;
 
 namespace TravelCompanyBusinessLogic.BusinessLogic
 {
@@ -46,14 +53,14 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
                     Travels = new List<Tuple<string, int>>(),
                     TotalCount = 0
                 };
-                foreach (var Travel in products)
+                foreach (var travel in products)
                 {
-                    if (Travel.TravelComponents.ContainsKey(component.Id))
+                    if (travel.TravelComponents.ContainsKey(component.Id))
                     {
                         record.Travels.Add(new Tuple<string,
-                       int>(Travel.TravelName, Travel.TravelComponents[component.Id].Item2));
+                       int>(travel.TravelName, travel.TravelComponents[component.Id].Item2));
                         record.TotalCount +=
-                       Travel.TravelComponents[component.Id].Item2;
+                       travel.TravelComponents[component.Id].Item2;
                     }
                 }
                 list.Add(record);

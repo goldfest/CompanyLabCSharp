@@ -29,46 +29,47 @@
         private void InitializeComponent()
         {
             panel = new Panel();
-            ToPdfButton = new Button();
-            MakeButton = new Button();
+            buttonCreateToPdf = new Button();
+            buttonCreateReport = new Button();
             label2 = new Label();
             label1 = new Label();
-            dateTimePickerTo = new DateTimePicker();
             dateTimePickerFrom = new DateTimePicker();
+            dateTimePickerTo = new DateTimePicker();
             panel.SuspendLayout();
             SuspendLayout();
             // 
             // panel
             // 
-            panel.Controls.Add(ToPdfButton);
-            panel.Controls.Add(MakeButton);
+            panel.Controls.Add(buttonCreateToPdf);
+            panel.Controls.Add(buttonCreateReport);
             panel.Controls.Add(label2);
             panel.Controls.Add(label1);
-            panel.Controls.Add(dateTimePickerTo);
             panel.Controls.Add(dateTimePickerFrom);
+            panel.Controls.Add(dateTimePickerTo);
             panel.Location = new Point(12, 12);
             panel.Name = "panel";
             panel.Size = new Size(776, 43);
             panel.TabIndex = 0;
             // 
-            // ToPdfButton
+            // buttonCreateToPdf
             // 
-            ToPdfButton.Location = new Point(623, 17);
-            ToPdfButton.Name = "ToPdfButton";
-            ToPdfButton.Size = new Size(150, 23);
-            ToPdfButton.TabIndex = 5;
-            ToPdfButton.Text = "В Pdf";
-            ToPdfButton.UseVisualStyleBackColor = true;
+            buttonCreateToPdf.Location = new Point(623, 17);
+            buttonCreateToPdf.Name = "buttonCreateToPdf";
+            buttonCreateToPdf.Size = new Size(150, 23);
+            buttonCreateToPdf.TabIndex = 5;
+            buttonCreateToPdf.Text = "В Pdf";
+            buttonCreateToPdf.UseVisualStyleBackColor = true;
+            buttonCreateToPdf.Click += buttonCreateToPdf_Click;
             // 
-            // MakeButton
+            // buttonCreateReport
             // 
-            MakeButton.Location = new Point(470, 17);
-            MakeButton.Name = "MakeButton";
-            MakeButton.Size = new Size(147, 23);
-            MakeButton.TabIndex = 4;
-            MakeButton.Text = "Сформировать";
-            MakeButton.UseVisualStyleBackColor = true;
-            MakeButton.Click += MakeButton_Click;
+            buttonCreateReport.Location = new Point(470, 17);
+            buttonCreateReport.Name = "buttonCreateReport";
+            buttonCreateReport.Size = new Size(147, 23);
+            buttonCreateReport.TabIndex = 4;
+            buttonCreateReport.Text = "Сформировать";
+            buttonCreateReport.UseVisualStyleBackColor = true;
+            buttonCreateReport.Click += buttonCreateReport_Click;
             // 
             // label2
             // 
@@ -88,13 +89,6 @@
             label1.TabIndex = 2;
             label1.Text = "С";
             // 
-            // dateTimePickerTo
-            // 
-            dateTimePickerTo.Location = new Point(264, 17);
-            dateTimePickerTo.Name = "dateTimePickerTo";
-            dateTimePickerTo.Size = new Size(200, 23);
-            dateTimePickerTo.TabIndex = 1;
-            // 
             // dateTimePickerFrom
             // 
             dateTimePickerFrom.Location = new Point(29, 17);
@@ -102,13 +96,20 @@
             dateTimePickerFrom.Size = new Size(200, 23);
             dateTimePickerFrom.TabIndex = 0;
             // 
-            // ReportOrdersForm
+            // dateTimePickerTo
+            // 
+            dateTimePickerTo.Location = new Point(264, 17);
+            dateTimePickerTo.Name = "dateTimePickerTo";
+            dateTimePickerTo.Size = new Size(200, 23);
+            dateTimePickerTo.TabIndex = 1;
+            // 
+            // FormReportOrders
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(panel);
-            Name = "ReportOrdersForm";
+            Name = "FormReportOrders";
             Text = "Заказы";
             panel.ResumeLayout(false);
             panel.PerformLayout();
@@ -118,11 +119,11 @@
         #endregion
 
         private Panel panel;
-        private Button ToPdfButton;
-        private Button MakeButton;
+        private Button buttonCreateToPdf;
+        private Button buttonCreateReport;
         private Label label2;
         private Label label1;
-        private DateTimePicker dateTimePickerTo;
         private DateTimePicker dateTimePickerFrom;
+        private DateTimePicker dateTimePickerTo;
     }
 }
