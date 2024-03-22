@@ -21,11 +21,13 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        private readonly IShopStorage _shopStorage;
 
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopStorage shopStorage)
         {
             _logger = logger;
             _orderStorage = orderStorage;
+            _shopStorage = shopStorage;
         }
 
         public List<OrderViewModel>? ReadList(OrderSearchModel? model)
@@ -70,6 +72,23 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
         public bool DeliveryOrder(OrderBindingModel model)
         {
+            var order = _orderStorage.GetElement(new OrderSearchModel
+            {
+                Id = model.Id,
+            });
+            if (order == null)
+            {
+                throw new ArgumentNullException(nameof(order));
+            }
+            if (!_shopStorage.RestockingShops(new SupplyBindingModel
+            {
+                TravelId = order.TravelId,
+                Count = order.Count
+            }))
+            {
+                throw new ArgumentException("Недостаточно места");
+            }
+
             return ToNextStatus(model, OrderStatus.Выдан);
         }
 
