@@ -44,6 +44,7 @@
             buttonRef.TabIndex = 9;
             buttonRef.Text = "Обновить";
             buttonRef.UseVisualStyleBackColor = true;
+            buttonRef.Click += buttonRef_Click;
             // 
             // buttonDel
             // 
@@ -53,6 +54,7 @@
             buttonDel.TabIndex = 8;
             buttonDel.Text = "Удалить";
             buttonDel.UseVisualStyleBackColor = true;
+            buttonDel.Click += buttonDel_Click;
             // 
             // buttonUpd
             // 
@@ -62,6 +64,7 @@
             buttonUpd.TabIndex = 7;
             buttonUpd.Text = "Изменить";
             buttonUpd.UseVisualStyleBackColor = true;
+            buttonUpd.Click += buttonUpd_Click;
             // 
             // buttonAdd
             // 
@@ -71,6 +74,7 @@
             buttonAdd.TabIndex = 6;
             buttonAdd.Text = "Добавить";
             buttonAdd.UseVisualStyleBackColor = true;
+            buttonAdd.Click += buttonAdd_Click;
             // 
             // dataGridView
             // 
@@ -96,6 +100,7 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "FormTravels";
             Text = "Список туристических путёвок";
+            Load += FormTravels_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
         }
