@@ -123,10 +123,6 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
                 {
                     throw new ArgumentException($"Поставка: Товар с id:{model.TravelId} не найденн");
                 }
-                if (shop.ShopTravels.Sum(kv => kv.Value.Item2) + model.Count > shop.TravelMaxCount)
-                {
-                    throw new ArgumentException("Превышена максимальная вместимость магазина");
-                }
                 shop.ShopTravels.Add(model.TravelId, (Travel, model.Count));
             }
 
@@ -142,7 +138,6 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
 
             return true;
         }
-
 
         private void CheckModel(ShopBindingModel model, bool withParams = true)
         {
