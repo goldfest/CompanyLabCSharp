@@ -16,8 +16,7 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
     {
         private readonly ILogger _logger;
         private readonly ITravelStorage _TravelStorage;
-        public TravelLogic(ILogger<TravelLogic> logger, ITravelStorage
-       TravelStorage)
+        public TravelLogic(ILogger<TravelLogic> logger, ITravelStorage TravelStorage)
         {
             _logger = logger;
             _TravelStorage = TravelStorage;

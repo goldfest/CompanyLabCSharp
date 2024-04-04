@@ -1,16 +1,8 @@
-﻿using TravelCompanyContracts.BindingModels;
+﻿using Microsoft.Extensions.Logging;
+using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyContracts.SearchModels;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using TravelCompanyContracts.ViewModels;
 
 namespace TravelCompany.Forms
 {
@@ -19,6 +11,8 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly ITravelLogic _logicP;
         private readonly IOrderLogic _logicO;
+        private List<TravelViewModel>? _list;
+
         public FormCreateOrder(ILogger<FormCreateOrder> logger, ITravelLogic logicP, IOrderLogic logicO)
         {
             InitializeComponent();
@@ -29,23 +23,17 @@ namespace TravelCompany.Forms
 
         private void FormCreateOrder_Load(object sender, EventArgs e)
         {
-            try
+            _list = _logicP.ReadList(null);
+            if (_list != null)
             {
-                var list = _logicP.ReadList(null);
-                if (list != null)
-                {
-                    comboBoxTravel.DisplayMember = "TravelName";
-                    comboBoxTravel.ValueMember = "Id";
-                    comboBoxTravel.DataSource = list;
-                    comboBoxTravel.SelectedItem = null;
-                    _logger.LogInformation("Загрузка изделий для заказа");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Ошибка загрузки списка изделий");
+                comboBoxTravel.DisplayMember = "TravelName";
+                comboBoxTravel.ValueMember = "Id";
+                comboBoxTravel.DataSource = _list;
+                comboBoxTravel.SelectedItem = null;
+                _logger.LogInformation("Загрузка пиццы для заказа");
             }
         }
+
         private void CalcSum()
         {
             if (comboBoxTravel.SelectedValue != null && !string.IsNullOrEmpty(textBoxCount.Text))
@@ -68,7 +56,8 @@ namespace TravelCompany.Forms
                 }
             }
         }
-        private void textBoxCount_TextChanged(object sender, EventArgs e)
+
+        private void TextBoxCount_TextChanged(object sender, EventArgs e)
         {
             CalcSum();
         }
@@ -78,7 +67,7 @@ namespace TravelCompany.Forms
             CalcSum();
         }
 
-        private void buttonSave_Click(object sender, EventArgs e)
+        private void ButtonSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxCount.Text))
             {
@@ -87,7 +76,7 @@ namespace TravelCompany.Forms
             }
             if (comboBoxTravel.SelectedValue == null)
             {
-                MessageBox.Show("Выберите изделие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Выберите пиццу", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             _logger.LogInformation("Создание заказа");
@@ -109,15 +98,15 @@ namespace TravelCompany.Forms
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка создания заказа"); MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _logger.LogError(ex, "Ошибка создания заказа");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void buttonCancel_Click(object sender, EventArgs e)
+        private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
-
     }
 }

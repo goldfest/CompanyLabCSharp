@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TravelCompany;
+﻿using Microsoft.Extensions.Logging;
 using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
-using Microsoft.Extensions.Logging;
 
 namespace TravelCompany.Forms
 {
@@ -18,6 +8,7 @@ namespace TravelCompany.Forms
     {
         private readonly ILogger _logger;
         private readonly ITravelLogic _logic;
+
         public FormTravels(ILogger<FormTravels> logger, ITravelLogic logic)
         {
             InitializeComponent();
@@ -25,7 +16,7 @@ namespace TravelCompany.Forms
             _logic = logic;
         }
 
-        private void FormTravels_Load(object sender, EventArgs e)
+        private void FormTravel_Load(object sender, EventArgs e)
         {
             LoadData();
         }
@@ -40,17 +31,19 @@ namespace TravelCompany.Forms
                     dataGridView.DataSource = list;
                     dataGridView.Columns["Id"].Visible = false;
                     dataGridView.Columns["TravelComponents"].Visible = false;
-                    dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns["TravelName"].AutoSizeMode =
+                    DataGridViewAutoSizeColumnMode.Fill;
                 }
-                _logger.LogInformation("Загрузка путёвок");
+                _logger.LogInformation("Загрузка пиццы");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Ошибка загрузки компонентов");
+                _logger.LogError(ex, "Ошибка загрузки пиццы");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void buttonAdd_Click(object sender, EventArgs e)
+        private void ButtonAdd_Click(object sender, EventArgs e)
         {
             var service = Program.ServiceProvider?.GetService(typeof(FormTravel));
             if (service is FormTravel form)
@@ -62,7 +55,7 @@ namespace TravelCompany.Forms
             }
         }
 
-        private void buttonUpd_Click(object sender, EventArgs e)
+        private void ButtonUpd_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
@@ -78,15 +71,14 @@ namespace TravelCompany.Forms
             }
         }
 
-        private void buttonDel_Click(object sender, EventArgs e)
+        private void ButtonDel_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
                 if (MessageBox.Show("Удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    int id =
-                   Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    _logger.LogInformation("Удаление путёвок");
+                    int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                    _logger.LogInformation("Удаление пиццы");
                     try
                     {
                         if (!_logic.Delete(new TravelBindingModel
@@ -100,14 +92,14 @@ namespace TravelCompany.Forms
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Ошибка удаления путевки");
+                        _logger.LogError(ex, "Ошибка удаления пиццы");
                         MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
 
-        private void buttonRef_Click(object sender, EventArgs e)
+        private void ButtonRef_Click(object sender, EventArgs e)
         {
             LoadData();
         }

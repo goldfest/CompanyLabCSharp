@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
-using TravelCompanyContracts.BindingModels;
-using TravelCompanyContracts.BusinessLogicsContracts;
-using TravelCompanyContracts.SearchModels;
-using TravelCompanyContracts.StoragesContracts;
-using TravelCompanyContracts.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelCompanyContracts.BindingModels;
+using TravelCompanyContracts.BusinessLogicsContracts;
+using TravelCompanyContracts.SearchModels;
+using TravelCompanyContracts.StoragesContracts;
+using TravelCompanyContracts.ViewModels;
 
 namespace TravelCompanyBusinessLogic.BusinessLogics
 {
@@ -125,6 +125,17 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
                 }
                 shop.ShopTravels.Add(model.TravelId, (Travel, model.Count));
             }
+
+            _shopStorage.Update(new ShopBindingModel()
+            {
+                Id = shop.Id,
+                ShopName = shop.ShopName,
+                Adress = shop.Adress,
+                OpeningDate = shop.OpeningDate,
+                ShopTravels = shop.ShopTravels,
+                TravelMaxCount = shop.TravelMaxCount,
+            });
+
             return true;
         }
 
