@@ -12,7 +12,7 @@ using TravelCompanyDatabaseImplement;
 namespace TravelCompanyDatabaseImplement.Migrations
 {
     [DbContext(typeof(TravelCompanyDataBase))]
-    [Migration("20240308202100_InitialCreate")]
+    [Migration("20240404185254_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -78,6 +78,59 @@ namespace TravelCompanyDatabaseImplement.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Shop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OpeningDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ShopName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TravelMaxCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shops");
+                });
+
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.ShopTravels", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TravelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.HasIndex("TravelId");
+
+                    b.ToTable("ShopTravels");
+                });
+
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Travel", b =>
                 {
                     b.Property<int>("Id")
@@ -133,6 +186,25 @@ namespace TravelCompanyDatabaseImplement.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.ShopTravels", b =>
+                {
+                    b.HasOne("TravelCompanyDatabaseImplement.Models.Shop", "Shop")
+                        .WithMany("Travels")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelCompanyDatabaseImplement.Models.Travel", "Travel")
+                        .WithMany()
+                        .HasForeignKey("TravelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shop");
+
+                    b.Navigation("Travel");
+                });
+
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.TravelComponent", b =>
                 {
                     b.HasOne("TravelCompanyDatabaseImplement.Models.Component", "Component")
@@ -155,6 +227,11 @@ namespace TravelCompanyDatabaseImplement.Migrations
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Component", b =>
                 {
                     b.Navigation("TravelComponents");
+                });
+
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Shop", b =>
+                {
+                    b.Navigation("Travels");
                 });
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Travel", b =>
