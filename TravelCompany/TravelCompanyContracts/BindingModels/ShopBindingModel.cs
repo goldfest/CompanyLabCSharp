@@ -1,0 +1,19 @@
+﻿using TravelCompanyDataModels.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TravelCompanyContracts.BindingModels
+{
+    public class ShopBindingModel : IShopModel
+    {
+        public int Id { get; set; }
+        public string ShopName { get; set; } = string.Empty;
+        public string Adress { get; set; } = string.Empty;
+        public DateTime OpeningDate { get; set; } = DateTime.Now;
+        public Dictionary<int, (ITravelModel, int)> ShopTravels { get; set; } = new();
+        public int TravelMaxCount { get; set; }
+    }
+}

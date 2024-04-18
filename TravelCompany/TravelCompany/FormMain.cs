@@ -188,5 +188,32 @@ Program.ServiceProvider?.GetService(typeof(FormReportOrders));
                 form.ShowDialog();
             }
         }
+
+        private void shopsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormShops));
+            if (service is FormShops form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void transactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormCreateSupply));
+            if (service is FormCreateSupply form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void SellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormSellTravels));
+            if (service is FormSellTravels form)
+            {
+                form.ShowDialog();
+            }
+        }
     }
 }

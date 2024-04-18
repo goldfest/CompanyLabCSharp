@@ -71,7 +71,6 @@
             textBoxCount.Name = "textBoxCount";
             textBoxCount.Size = new Size(246, 23);
             textBoxCount.TabIndex = 3;
-            textBoxCount.TextChanged += textBoxCount_TextChanged;
             // 
             // comboBoxTravel
             // 
@@ -98,7 +97,6 @@
             buttonSave.TabIndex = 6;
             buttonSave.Text = "Сохранить";
             buttonSave.UseVisualStyleBackColor = true;
-            buttonSave.Click += buttonSave_Click;
             // 
             // buttonCancel
             // 
@@ -108,7 +106,6 @@
             buttonCancel.TabIndex = 7;
             buttonCancel.Text = "Отмена";
             buttonCancel.UseVisualStyleBackColor = true;
-            buttonCancel.Click += buttonCancel_Click;
             // 
             // FormCreateOrder
             // 

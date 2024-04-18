@@ -1,13 +1,8 @@
 ﻿using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.ViewModels;
 using TravelCompanyDataModels.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
@@ -38,6 +33,8 @@ namespace TravelCompanyDatabaseImplement.Models
         public virtual List<TravelComponent> Components { get; set; } = new();
         [ForeignKey("TravelId")]
         public virtual List<Order> Orders { get; set; } = new();
+        [ForeignKey("TravelId")]
+        public virtual List<ShopTravels> ShopTravels { get; set; } = new();
         public static Travel Create(TravelCompanyDataBase context,
        TravelBindingModel model)
         {
@@ -54,6 +51,7 @@ namespace TravelCompanyDatabaseImplement.Models
                 }).ToList()
             };
         }
+
         public void Update(TravelBindingModel model)
         {
             TravelName = model.TravelName;
