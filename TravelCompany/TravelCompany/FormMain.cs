@@ -188,5 +188,15 @@ Program.ServiceProvider?.GetService(typeof(FormReportOrders));
                 form.ShowDialog();
             }
         }
+
+        private void клиентыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service =
+Program.ServiceProvider?.GetService(typeof(FormClients));
+            if (service is FormClients form)
+            {
+                form.ShowDialog();
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace TravelCompanyDataModels.Models
     public interface IOrderModel : IId
     {
         int TravelId { get; }
+        int ClientId { get; }
         int Count { get; }
         double Sum { get; }
         OrderStatus Status { get; }

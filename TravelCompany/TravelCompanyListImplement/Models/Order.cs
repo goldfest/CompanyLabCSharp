@@ -15,6 +15,7 @@ namespace TravelCompanyListImplement.Models
     {
         public int Id { get; private set; }
         public int TravelId { get; private set; }
+        public int ClientId { get; private set; }
         public int Count { get; private set; }
         public double Sum { get; private set; }
         public OrderStatus Status { get; private set; }
@@ -30,6 +31,7 @@ namespace TravelCompanyListImplement.Models
             {
                 Id = model.Id,
                 TravelId = model.TravelId,
+                ClientId = model.ClientId,
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = model.Status,
@@ -44,6 +46,7 @@ namespace TravelCompanyListImplement.Models
                 return;
             }
             TravelId = model.TravelId;
+            ClientId = model.ClientId;
             Count = model.Count;
             Sum = model.Sum;
             Status = model.Status;
@@ -54,6 +57,7 @@ namespace TravelCompanyListImplement.Models
         {
             Id = Id,
             TravelId = TravelId,
+            ClientId = ClientId,
             Count = Count,
             Sum = Sum,
             Status = Status,

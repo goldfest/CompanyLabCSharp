@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelCompanyListImplement"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelCompanyFileImplement", "TravelCompanyFileImplement\TravelCompanyFileImplement.csproj", "{3684BE6E-B9D1-450E-B450-FCE08421C87B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCompanyDatabaseImplement", "TravelCompanyDatabaseImplement\TravelCompanyDatabaseImplement.csproj", "{1232CA3D-F5FE-4BD6-88E9-719F822E605B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TravelCompanyDatabaseImplement", "TravelCompanyDatabaseImplement\TravelCompanyDatabaseImplement.csproj", "{1232CA3D-F5FE-4BD6-88E9-719F822E605B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCompanyRestApi", "TravelCompanyRestApi\TravelCompanyRestApi.csproj", "{EDF8977C-50AE-4011-8771-A39F7442331D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TravelCompanyClientApp", "TravelCompanyClientApp\TravelCompanyClientApp.csproj", "{8F25F567-8D4C-4178-A5A2-33D54A97417C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{1232CA3D-F5FE-4BD6-88E9-719F822E605B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1232CA3D-F5FE-4BD6-88E9-719F822E605B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1232CA3D-F5FE-4BD6-88E9-719F822E605B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDF8977C-50AE-4011-8771-A39F7442331D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDF8977C-50AE-4011-8771-A39F7442331D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDF8977C-50AE-4011-8771-A39F7442331D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDF8977C-50AE-4011-8771-A39F7442331D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F25F567-8D4C-4178-A5A2-33D54A97417C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F25F567-8D4C-4178-A5A2-33D54A97417C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F25F567-8D4C-4178-A5A2-33D54A97417C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F25F567-8D4C-4178-A5A2-33D54A97417C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

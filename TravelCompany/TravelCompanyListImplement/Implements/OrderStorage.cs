@@ -14,39 +14,35 @@ namespace TravelCompanyListImplement.Implements
     public class OrderStorage : IOrderStorage
     {
         private readonly DataListSingleton _source;
-
         public OrderStorage()
         {
             _source = DataListSingleton.GetInstance();
         }
-
         public List<OrderViewModel> GetFullList()
         {
             var result = new List<OrderViewModel>();
             foreach (var order in _source.Orders)
             {
-                result.Add(AttachTravelName(order.GetViewModel));
+                result.Add(AccessTravelStorage(order.GetViewModel));
             }
             return result;
         }
-
-        public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
+        public List<OrderViewModel> GetFilteredList(OrderSearchModel
+       model)
         {
             var result = new List<OrderViewModel>();
-            if (model == null || !model.Id.HasValue)
-            {
-                return result;
-            }
             foreach (var order in _source.Orders)
             {
-                if (order.Id == model.Id)
+                if ((!model.Id.HasValue || order.Id == model.Id) &&
+                        (!model.DateFrom.HasValue || order.DateCreate >= model.DateFrom) &&
+                        (!model.DateTo.HasValue || order.DateCreate <= model.DateTo) &&
+                        (!model.ClientId.HasValue || order.ClientId == model.ClientId)) ;
                 {
-                    result.Add(AttachTravelName(order.GetViewModel));
+                    result.Add(AccessTravelStorage(order.GetViewModel));
                 }
             }
             return result;
         }
-
         public OrderViewModel? GetElement(OrderSearchModel model)
         {
             if (!model.Id.HasValue)
@@ -57,12 +53,11 @@ namespace TravelCompanyListImplement.Implements
             {
                 if (model.Id.HasValue && order.Id == model.Id)
                 {
-                    return AttachTravelName(order.GetViewModel);
+                    return order.GetViewModel;
                 }
             }
             return null;
         }
-
         public OrderViewModel? Insert(OrderBindingModel model)
         {
             model.Id = 1;
@@ -79,9 +74,8 @@ namespace TravelCompanyListImplement.Implements
                 return null;
             }
             _source.Orders.Add(newOrder);
-            return AttachTravelName(newOrder.GetViewModel);
+            return newOrder.GetViewModel;
         }
-
         public OrderViewModel? Update(OrderBindingModel model)
         {
             foreach (var order in _source.Orders)
@@ -89,12 +83,11 @@ namespace TravelCompanyListImplement.Implements
                 if (order.Id == model.Id)
                 {
                     order.Update(model);
-                    return AttachTravelName(order.GetViewModel);
+                    return order.GetViewModel;
                 }
             }
             return null;
         }
-
         public OrderViewModel? Delete(OrderBindingModel model)
         {
             for (int i = 0; i < _source.Orders.Count; ++i)
@@ -103,23 +96,34 @@ namespace TravelCompanyListImplement.Implements
                 {
                     var element = _source.Orders[i];
                     _source.Orders.RemoveAt(i);
-                    return AttachTravelName(element.GetViewModel);
+                    return element.GetViewModel;
                 }
             }
             return null;
         }
 
-        private OrderViewModel AttachTravelName(OrderViewModel model)
+        public OrderViewModel AccessTravelStorage(OrderViewModel model)
         {
             foreach (var Travel in _source.Travels)
             {
                 if (Travel.Id == model.TravelId)
                 {
                     model.TravelName = Travel.TravelName;
-                    return model;
+                    break;
                 }
             }
             return model;
         }
+
+        public OrderViewModel AccessClientStorage(OrderViewModel model)
+        {
+            var client = _source.Clients.FirstOrDefault(x => x.Id == model.ClientId);
+            if (client != null)
+                model.ClientFIO = client.ClientFIO;
+            return model;
+        }
+
+
     }
+
 }

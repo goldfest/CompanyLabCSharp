@@ -36,6 +36,8 @@
             textBoxSum = new TextBox();
             buttonSave = new Button();
             buttonCancel = new Button();
+            ClientComboBox = new ComboBox();
+            ClientLabel = new Label();
             SuspendLayout();
             // 
             // label1
@@ -92,9 +94,9 @@
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(150, 101);
+            buttonSave.Location = new Point(156, 142);
             buttonSave.Name = "buttonSave";
-            buttonSave.Size = new Size(94, 26);
+            buttonSave.Size = new Size(94, 27);
             buttonSave.TabIndex = 6;
             buttonSave.Text = "Сохранить";
             buttonSave.UseVisualStyleBackColor = true;
@@ -102,19 +104,38 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(249, 101);
+            buttonCancel.Location = new Point(255, 142);
             buttonCancel.Name = "buttonCancel";
-            buttonCancel.Size = new Size(94, 26);
+            buttonCancel.Size = new Size(94, 27);
             buttonCancel.TabIndex = 7;
             buttonCancel.Text = "Отмена";
             buttonCancel.UseVisualStyleBackColor = true;
             buttonCancel.Click += buttonCancel_Click;
             // 
+            // ClientComboBox
+            // 
+            ClientComboBox.FormattingEnabled = true;
+            ClientComboBox.Location = new Point(103, 99);
+            ClientComboBox.Name = "ClientComboBox";
+            ClientComboBox.Size = new Size(246, 23);
+            ClientComboBox.TabIndex = 10;
+            // 
+            // ClientLabel
+            // 
+            ClientLabel.AutoSize = true;
+            ClientLabel.Location = new Point(19, 102);
+            ClientLabel.Name = "ClientLabel";
+            ClientLabel.Size = new Size(46, 15);
+            ClientLabel.TabIndex = 11;
+            ClientLabel.Text = "Клиент";
+            // 
             // FormCreateOrder
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(374, 136);
+            ClientSize = new Size(374, 181);
+            Controls.Add(ClientLabel);
+            Controls.Add(ClientComboBox);
             Controls.Add(buttonCancel);
             Controls.Add(buttonSave);
             Controls.Add(textBoxSum);
@@ -140,5 +161,7 @@
         private TextBox textBoxSum;
         private Button buttonSave;
         private Button buttonCancel;
+        private ComboBox ClientComboBox;
+        private Label ClientLabel;
     }
 }

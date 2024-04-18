@@ -14,14 +14,15 @@ namespace TravelCompanyFileImplement.Models
     public class Order : IOrderModel
     {
         public int TravelId { get; private set; }
+        public int ClientId { get; private set; }
 
         public int Count { get; private set; }
 
         public double Sum { get; private set; }
 
-        public OrderStatus Status { get; private set; } = OrderStatus.Неизвестен;
+        public OrderStatus Status { get; private set; } 
 
-        public DateTime DateCreate { get; private set; } = DateTime.Now;
+        public DateTime DateCreate { get; private set; }
 
         public DateTime? DateImplement { get; private set; }
 
@@ -37,6 +38,7 @@ namespace TravelCompanyFileImplement.Models
             {
                 Id = model.Id,
                 TravelId = model.TravelId,
+                ClientId = model.ClientId,
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = model.Status,
@@ -51,24 +53,17 @@ namespace TravelCompanyFileImplement.Models
             {
                 return null;
             }
-            var order = new Order()
+            return new Order()
             {
                 Id = Convert.ToInt32(element.Attribute("Id")!.Value),
                 TravelId = Convert.ToInt32(element.Element("TravelId")!.Value),
+                ClientId = Convert.ToInt32(element.Element("ClientId")!.Value),
                 Count = Convert.ToInt32(element.Element("Count")!.Value),
                 Sum = Convert.ToDouble(element.Element("Sum")!.Value),
-                DateCreate = DateTime.ParseExact(element.Element("DateCreate")!.Value, "G", null),
+                Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), element.Element("Status")!.Value.ToString()),
+                DateCreate = Convert.ToDateTime(element.Element("DateCreate")!.Value),
+                DateImplement = string.IsNullOrEmpty(element.Element("DateImplement")!.Value) ? null : Convert.ToDateTime(element.Element("DateImplement")!.Value)
             };
-            DateTime.TryParse(element.Element("DateImplement")!.Value, out DateTime dateImpl);
-
-            order.DateImplement = dateImpl;
-
-            if (!Enum.TryParse(element.Element("Status")!.Value, out OrderStatus status))
-            {
-                return null;
-            }
-            order.Status = status;
-            return order;
         }
 
         public void Update(OrderBindingModel? model)
@@ -85,6 +80,7 @@ namespace TravelCompanyFileImplement.Models
         {
             Id = Id,
             TravelId = TravelId,
+            ClientId = ClientId,
             Count = Count,
             Sum = Sum,
             Status = Status,

@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelCompanyContracts.BindingModels;
+using TravelCompanyContracts.ViewModels;
+using TravelCompanyDatabaseImplement.Models;
+using TravelCompanyDataModels.Enums;
+using TravelCompanyDataModels.Models;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
@@ -25,8 +30,11 @@ namespace TravelCompanyDatabaseImplement.Models
         public DateTime? DateImplement { get; private set; }
         [Required]
         public int TravelId { get; private set; }
-
-        public static Order? Create(OrderBindingModel model)
+        public virtual Travel Travel { get; private set; }
+        [Required]
+        public int ClientId { get; private set; }
+        public virtual Client Client { get; private set; }
+        public static Order? Create(TravelCompanyDataBase context, OrderBindingModel model)
         {
             if (model == null)
             {
@@ -41,6 +49,9 @@ namespace TravelCompanyDatabaseImplement.Models
                 DateCreate = model.DateCreate,
                 DateImplement = model.DateImplement,
                 TravelId = model.TravelId,
+                Travel = context.Travels.FirstOrDefault(x => x.Id == model.TravelId),
+                ClientId = model.ClientId,
+                Client = context.Clients.FirstOrDefault(x => x.Id == model.ClientId),
             };
         }
 
@@ -57,12 +68,15 @@ namespace TravelCompanyDatabaseImplement.Models
         public OrderViewModel GetViewModel => new()
         {
             TravelId = TravelId,
+            ClientId = ClientId,
             Count = Count,
             Sum = Sum,
             Status = Status,
             DateCreate = DateCreate,
             DateImplement = DateImplement,
+            TravelName = Travel.TravelName,
             Id = Id,
+            ClientFIO = Client.ClientFIO
         };
 
     }

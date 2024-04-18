@@ -19,12 +19,14 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly ITravelLogic _logicP;
         private readonly IOrderLogic _logicO;
-        public FormCreateOrder(ILogger<FormCreateOrder> logger, ITravelLogic logicP, IOrderLogic logicO)
+        private readonly IClientLogic _logicC;
+        public FormCreateOrder(ILogger<FormCreateOrder> logger, ITravelLogic logicP, IClientLogic logicC, IOrderLogic logicO)
         {
             InitializeComponent();
             _logger = logger;
             _logicP = logicP;
             _logicO = logicO;
+            _logicC = logicC;
         }
 
         private void FormCreateOrder_Load(object sender, EventArgs e)
@@ -44,6 +46,28 @@ namespace TravelCompany.Forms
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка загрузки списка изделий");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+MessageBoxIcon.Error);
+            }
+
+            _logger.LogInformation("Загрузка клиентов для заказа");
+            try
+            {
+                var list = _logicC.ReadList(null);
+                if (list != null)
+                {
+                    ClientComboBox.DisplayMember = "ClientFIO";
+                    ClientComboBox.ValueMember = "Id";
+                    ClientComboBox.DataSource = list;
+                    ClientComboBox.SelectedItem = null;
+                }
+                _logger.LogInformation("Клиенты загружены");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка загрузки клиентов");
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
             }
         }
         private void CalcSum()
@@ -96,6 +120,7 @@ namespace TravelCompany.Forms
                 var operationResult = _logicO.CreateOrder(new OrderBindingModel
                 {
                     TravelId = Convert.ToInt32(comboBoxTravel.SelectedValue),
+                    ClientId = Convert.ToInt32(ClientComboBox.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToDouble(textBoxSum.Text)
                 });
@@ -110,6 +135,8 @@ namespace TravelCompany.Forms
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка создания заказа"); MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK,
+MessageBoxIcon.Error);
             }
         }
 

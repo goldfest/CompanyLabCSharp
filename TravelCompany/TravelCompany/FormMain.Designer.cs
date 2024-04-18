@@ -33,16 +33,17 @@
             toolStripDropDownButton1 = new ToolStripDropDownButton();
             компонентыToolStripMenuItem = new ToolStripMenuItem();
             ПутёвкиToolStripMenuItem = new ToolStripMenuItem();
+            отчетыToolStripMenuItem = new ToolStripMenuItem();
+            списокКомпонентовToolStripMenuItem = new ToolStripMenuItem();
+            компонентыПоПутёвкамToolStripMenuItem = new ToolStripMenuItem();
+            списокЗаказовToolStripMenuItem = new ToolStripMenuItem();
             buttonCreateOrder = new Button();
             buttonTakeOrderInWork = new Button();
             buttonOrderReady = new Button();
             buttonIssuedOrder = new Button();
             buttonRef = new Button();
             dataGridView = new DataGridView();
-            отчетыToolStripMenuItem = new ToolStripMenuItem();
-            списокКомпонентовToolStripMenuItem = new ToolStripMenuItem();
-            компонентыПоПутёвкамToolStripMenuItem = new ToolStripMenuItem();
-            списокЗаказовToolStripMenuItem = new ToolStripMenuItem();
+            клиентыToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -60,7 +61,7 @@
             // toolStripDropDownButton1
             // 
             toolStripDropDownButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { компонентыToolStripMenuItem, ПутёвкиToolStripMenuItem });
+            toolStripDropDownButton1.DropDownItems.AddRange(new ToolStripItem[] { компонентыToolStripMenuItem, ПутёвкиToolStripMenuItem, клиентыToolStripMenuItem });
             toolStripDropDownButton1.Image = (Image)resources.GetObject("toolStripDropDownButton1.Image");
             toolStripDropDownButton1.ImageTransparentColor = Color.Magenta;
             toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -70,16 +71,44 @@
             // компонентыToolStripMenuItem
             // 
             компонентыToolStripMenuItem.Name = "компонентыToolStripMenuItem";
-            компонентыToolStripMenuItem.Size = new Size(174, 22);
+            компонентыToolStripMenuItem.Size = new Size(180, 22);
             компонентыToolStripMenuItem.Text = "Компоненты";
             компонентыToolStripMenuItem.Click += компонентыToolStripMenuItem_Click;
             // 
             // ПутёвкиToolStripMenuItem
             // 
             ПутёвкиToolStripMenuItem.Name = "ПутёвкиToolStripMenuItem";
-            ПутёвкиToolStripMenuItem.Size = new Size(174, 22);
+            ПутёвкиToolStripMenuItem.Size = new Size(180, 22);
             ПутёвкиToolStripMenuItem.Text = "Туристич. путёвки";
             ПутёвкиToolStripMenuItem.Click += консервыToolStripMenuItem_Click;
+            // 
+            // отчетыToolStripMenuItem
+            // 
+            отчетыToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { списокКомпонентовToolStripMenuItem, компонентыПоПутёвкамToolStripMenuItem, списокЗаказовToolStripMenuItem });
+            отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
+            отчетыToolStripMenuItem.Size = new Size(60, 25);
+            отчетыToolStripMenuItem.Text = "Отчеты";
+            // 
+            // списокКомпонентовToolStripMenuItem
+            // 
+            списокКомпонентовToolStripMenuItem.Name = "списокКомпонентовToolStripMenuItem";
+            списокКомпонентовToolStripMenuItem.Size = new Size(216, 22);
+            списокКомпонентовToolStripMenuItem.Text = "Список компонентов";
+            списокКомпонентовToolStripMenuItem.Click += списокКомпонентовToolStripMenuItem_Click;
+            // 
+            // компонентыПоПутёвкамToolStripMenuItem
+            // 
+            компонентыПоПутёвкамToolStripMenuItem.Name = "компонентыПоПутёвкамToolStripMenuItem";
+            компонентыПоПутёвкамToolStripMenuItem.Size = new Size(216, 22);
+            компонентыПоПутёвкамToolStripMenuItem.Text = "Компоненты по путёвкам";
+            компонентыПоПутёвкамToolStripMenuItem.Click += компонентыПоПутёвкамToolStripMenuItem_Click;
+            // 
+            // списокЗаказовToolStripMenuItem
+            // 
+            списокЗаказовToolStripMenuItem.Name = "списокЗаказовToolStripMenuItem";
+            списокЗаказовToolStripMenuItem.Size = new Size(216, 22);
+            списокЗаказовToolStripMenuItem.Text = "Список заказов";
+            списокЗаказовToolStripMenuItem.Click += списокЗаказовToolStripMenuItem_Click;
             // 
             // buttonCreateOrder
             // 
@@ -143,33 +172,12 @@
             dataGridView.Size = new Size(763, 435);
             dataGridView.TabIndex = 6;
             // 
-            // отчетыToolStripMenuItem
+            // клиентыToolStripMenuItem
             // 
-            отчетыToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { списокКомпонентовToolStripMenuItem, компонентыПоПутёвкамToolStripMenuItem, списокЗаказовToolStripMenuItem });
-            отчетыToolStripMenuItem.Name = "отчетыToolStripMenuItem";
-            отчетыToolStripMenuItem.Size = new Size(60, 25);
-            отчетыToolStripMenuItem.Text = "Отчеты";
-            // 
-            // списокКомпонентовToolStripMenuItem
-            // 
-            списокКомпонентовToolStripMenuItem.Name = "списокКомпонентовToolStripMenuItem";
-            списокКомпонентовToolStripMenuItem.Size = new Size(216, 22);
-            списокКомпонентовToolStripMenuItem.Text = "Список компонентов";
-            списокКомпонентовToolStripMenuItem.Click += списокКомпонентовToolStripMenuItem_Click;
-            // 
-            // компонентыПоПутёвкамToolStripMenuItem
-            // 
-            компонентыПоПутёвкамToolStripMenuItem.Name = "компонентыПоПутёвкамToolStripMenuItem";
-            компонентыПоПутёвкамToolStripMenuItem.Size = new Size(216, 22);
-            компонентыПоПутёвкамToolStripMenuItem.Text = "Компоненты по путёвкам";
-            компонентыПоПутёвкамToolStripMenuItem.Click += компонентыПоПутёвкамToolStripMenuItem_Click;
-            // 
-            // списокЗаказовToolStripMenuItem
-            // 
-            списокЗаказовToolStripMenuItem.Name = "списокЗаказовToolStripMenuItem";
-            списокЗаказовToolStripMenuItem.Size = new Size(216, 22);
-            списокЗаказовToolStripMenuItem.Text = "Список заказов";
-            списокЗаказовToolStripMenuItem.Click += списокЗаказовToolStripMenuItem_Click;
+            клиентыToolStripMenuItem.Name = "клиентыToolStripMenuItem";
+            клиентыToolStripMenuItem.Size = new Size(180, 22);
+            клиентыToolStripMenuItem.Text = "Клиенты";
+            клиентыToolStripMenuItem.Click += клиентыToolStripMenuItem_Click;
             // 
             // FormMain
             // 
@@ -209,5 +217,6 @@
         private ToolStripMenuItem списокКомпонентовToolStripMenuItem;
         private ToolStripMenuItem компонентыПоПутёвкамToolStripMenuItem;
         private ToolStripMenuItem списокЗаказовToolStripMenuItem;
+        private ToolStripMenuItem клиентыToolStripMenuItem;
     }
 }

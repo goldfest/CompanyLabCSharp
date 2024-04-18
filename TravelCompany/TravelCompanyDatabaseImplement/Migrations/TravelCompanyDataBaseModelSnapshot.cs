@@ -17,10 +17,35 @@ namespace TravelCompanyDatabaseImplement.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClientFIO")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Component", b =>
                 {
@@ -50,6 +75,9 @@ namespace TravelCompanyDatabaseImplement.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -69,6 +97,8 @@ namespace TravelCompanyDatabaseImplement.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("TravelId");
 
@@ -123,11 +153,21 @@ namespace TravelCompanyDatabaseImplement.Migrations
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Order", b =>
                 {
-                    b.HasOne("TravelCompanyDatabaseImplement.Models.Travel", null)
+                    b.HasOne("TravelCompanyDatabaseImplement.Models.Client", "Client")
+                        .WithMany("Orders")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TravelCompanyDatabaseImplement.Models.Travel", "Travel")
                         .WithMany("Orders")
                         .HasForeignKey("TravelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Travel");
                 });
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.TravelComponent", b =>
@@ -147,6 +187,11 @@ namespace TravelCompanyDatabaseImplement.Migrations
                     b.Navigation("Component");
 
                     b.Navigation("Travel");
+                });
+
+            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Client", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Component", b =>
