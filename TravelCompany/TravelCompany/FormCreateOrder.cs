@@ -3,6 +3,15 @@ using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TravelCompany.Forms
 {
@@ -30,7 +39,7 @@ namespace TravelCompany.Forms
                 comboBoxTravel.ValueMember = "Id";
                 comboBoxTravel.DataSource = _list;
                 comboBoxTravel.SelectedItem = null;
-                _logger.LogInformation("Загрузка пиццы для заказа");
+                _logger.LogInformation("Загрузка путевок для заказа");
             }
         }
 
@@ -76,7 +85,7 @@ namespace TravelCompany.Forms
             }
             if (comboBoxTravel.SelectedValue == null)
             {
-                MessageBox.Show("Выберите пиццу", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Выберите путевку", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             _logger.LogInformation("Создание заказа");

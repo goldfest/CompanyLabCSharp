@@ -1,16 +1,6 @@
 ﻿using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using TravelCompanyBusinessLogic.BusinessLogic;
 
 namespace TravelCompany.Forms
 {
@@ -155,40 +145,6 @@ namespace TravelCompany.Forms
             LoadData();
         }
 
-        private void списокКомпонентовToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                _reportLogic.SaveTravelsToWordFile(new ReportBindingModel
-                {
-                    FileName = dialog.FileName
-                });
-                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
-               MessageBoxIcon.Information);
-            }
-        }
-
-        private void компонентыПоПутёвкамToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var service =
-Program.ServiceProvider?.GetService(typeof(FormReportTravelComponents));
-            if (service is FormReportTravelComponents form)
-            {
-                form.ShowDialog();
-            }
-        }
-
-        private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var service =
-Program.ServiceProvider?.GetService(typeof(FormReportOrders));
-            if (service is FormReportOrders form)
-            {
-                form.ShowDialog();
-            }
-        }
-
         private void shopsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var service = Program.ServiceProvider?.GetService(typeof(FormShops));
@@ -215,5 +171,63 @@ Program.ServiceProvider?.GetService(typeof(FormReportOrders));
                 form.ShowDialog();
             }
         }
+
+        private void ComponentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveTravelsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void ComponentTravelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportTravelComponents));
+            if (service is FormReportTravelComponents form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void OrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportOrders));
+            if (service is FormReportOrders form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void InfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveShopsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void BusyShopsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportShop));
+            if (service is FormReportShop form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void GroupOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportGroupedOrders));
+            if (service is FormReportGroupedOrders form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+
     }
 }

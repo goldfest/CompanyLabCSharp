@@ -50,10 +50,39 @@ namespace TravelCompanyBusinessLogic.OfficePackage
             SavePdf(info);
         }
 
-        protected abstract void CreatePdf(PdfInfo info);
+        public void CreateGroupedOrdersDoc(PdfGroupedOrdersInfo info)
+        {
+            CreatePdf(info);
+            CreateParagraph(new PdfParagraph { Text = info.Title, Style = "NormalTitle", ParagraphAlignment = PdfParagraphAlignmentType.Center });
+
+            CreateTable(new List<string> { "4cm", "3cm", "2cm" });
+            CreateRow(new PdfRowParameters
+            {
+                Texts = new List<string> { "Дата заказа", "Кол-во", "Сумма" },
+                Style = "NormalTitle",
+                ParagraphAlignment = PdfParagraphAlignmentType.Center
+            });
+
+
+            foreach (var groupedOrder in info.GroupedOrders)
+            {
+                CreateRow(new PdfRowParameters
+                {
+                    Texts = new List<string> { groupedOrder.Date.ToShortDateString(), groupedOrder.OrdersCount.ToString(), groupedOrder.OrdersSum.ToString() },
+                    Style = "Normal",
+                    ParagraphAlignment = PdfParagraphAlignmentType.Left
+                });
+            }
+
+            CreateParagraph(new PdfParagraph { Text = $"Итого: {info.GroupedOrders.Sum(x => x.OrdersSum)}\t", Style = "Normal", ParagraphAlignment = PdfParagraphAlignmentType.Center });
+
+            SavePdf(info);
+        }
+
+        protected abstract void CreatePdf(IDocument info);
         protected abstract void CreateParagraph(PdfParagraph paragraph);
         protected abstract void CreateTable(List<string> columns);
         protected abstract void CreateRow(PdfRowParameters rowParameters);
-        protected abstract void SavePdf(PdfInfo info);
+        protected abstract void SavePdf(IDocument info);
     }
 }

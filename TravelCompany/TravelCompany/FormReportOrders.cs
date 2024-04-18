@@ -29,7 +29,7 @@ namespace TravelCompany.Forms
             {
                 Dock = DockStyle.Fill
             };
-            reportViewer.LocalReport.LoadReportDefinition(new FileStream("C:\\Users\\goldfest\\Desktop\\TravelCompany\\PrecastConcretePlant\\PrecastConcretePlantView\\ReportOrders.rdlc", FileMode.Open));
+            reportViewer.LocalReport.LoadReportDefinition(new FileStream("C:\\Users\\goldfest\\Desktop\\RPP\\TravelCompany\\TravelCompany\\ReportOrders.rdlc", FileMode.Open));
             Controls.Clear();
             Controls.Add(reportViewer);
             Controls.Add(panel);

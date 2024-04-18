@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TravelCompanyBusinessLogic.OfficePackage.HelperModels
 {
-    public class WordInfo
+    public class WordInfo : IDocument
     {
         public string FileName { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;

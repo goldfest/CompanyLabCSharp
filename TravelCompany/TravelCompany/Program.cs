@@ -65,6 +65,8 @@ namespace TravelCompany.Forms
             services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
             services.AddTransient<AbstractSaveToWord, SaveToWord>();
             services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
+            services.AddTransient<FormReportShop>();
+            services.AddTransient<FormReportGroupedOrders>();
         }
     }
 }
