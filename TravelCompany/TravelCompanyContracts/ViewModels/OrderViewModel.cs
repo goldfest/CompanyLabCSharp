@@ -20,7 +20,7 @@ namespace TravelCompanyContracts.ViewModels
         public int ClientId { get; set; }
         [DisplayName("Клиент")]
         public string ClientFIO { get; set; } = string.Empty;
-        [DisplayName("Мороженное")]
+        [DisplayName("Путёвка")]
         public string TravelName { get; set; } = string.Empty;
         [DisplayName("Количество")]
         public int Count { get; set; }

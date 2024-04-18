@@ -1,11 +1,16 @@
 ﻿@using TravelCompanyContracts.ViewModels
+
 @model List<OrderViewModel>
+
 @{
 	ViewData["Title"] = "Home Page";
 }
+
 <div class="text-center">
 	<h1 class="display-4">Заказы</h1>
 </div>
+
+
 <div class="text-center">
 	@{
 		if (Model == null)
@@ -13,6 +18,7 @@
 			<h3 class="display-4">Авторизируйтесь</h3>
 			return;
 		}
+
 		<p>
 			<a asp-action="Create">Создать заказ</a>
 		</p>
@@ -23,7 +29,7 @@
 						Номер
 					</th>
 					<th>
-						Путёвка
+						Путёвка					
 					</th>
 					<th>
 						Дата создания
@@ -44,28 +50,22 @@
 				{
 					<tr>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.Id)
+							@Html.DisplayFor(modelItem => item.Id)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.TravelName)
+							@Html.DisplayFor(modelItem => item.TravelName)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.DateCreate)
+							@Html.DisplayFor(modelItem => item.DateCreate)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.Count)
+							@Html.DisplayFor(modelItem => item.Count)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.Sum)
+							@Html.DisplayFor(modelItem => item.Sum)
 						</td>
 						<td>
-							@Html.DisplayFor(modelItem =>
-															item.Status)
+							@Html.DisplayFor(modelItem => item.Status)
 						</td>
 					</tr>
 				}

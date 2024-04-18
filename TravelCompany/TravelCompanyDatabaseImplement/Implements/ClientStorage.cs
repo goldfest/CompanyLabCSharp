@@ -3,6 +3,11 @@ using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.StoragesContracts;
 using TravelCompanyContracts.ViewModels;
 using TravelCompanyDatabaseImplement.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TravelCompanyDatabaseImplement.Implements
 {
