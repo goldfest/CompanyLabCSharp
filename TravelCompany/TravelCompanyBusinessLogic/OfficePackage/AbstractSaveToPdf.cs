@@ -36,7 +36,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage
             {
                 CreateRow(new PdfRowParameters
                 {
-                    Texts = new List<string> { order.Id.ToString(), order.DateCreate.ToShortDateString(), order.TravelName, order.Sum.ToString(), order.Status },
+                    Texts = new List<string> { order.Id.ToString(), order.DateCreate.ToShortDateString(), order.TravelName, order.Sum.ToString(), order.OrderStatus },
                     Style = "Normal",
                     ParagraphAlignment = PdfParagraphAlignmentType.Left
                 });

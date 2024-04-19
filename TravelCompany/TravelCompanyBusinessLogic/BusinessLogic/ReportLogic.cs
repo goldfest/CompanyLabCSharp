@@ -50,7 +50,7 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
                         DateCreate = x.DateCreate,
                         TravelName = x.TravelName,
                         Sum = x.Sum,
-                        Status = x.Status.ToString()
+                        OrderStatus = x.Status.ToString()
                     })
                     .ToList();
         }
