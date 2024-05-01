@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelCompanyDataModels.Enums;
 
 namespace TravelCompanyContracts.SearchModels
 {
@@ -10,6 +11,8 @@ namespace TravelCompanyContracts.SearchModels
     {
         public int? Id { get; set; }
         public int? ClientId { get; set; }
+        public int? ImplementerId { get; set; }
+        public OrderStatus? Status { get; set; }
         public DateTime? DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
     }

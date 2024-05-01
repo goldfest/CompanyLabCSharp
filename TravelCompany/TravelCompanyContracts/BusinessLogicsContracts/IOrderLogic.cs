@@ -26,5 +26,6 @@ namespace TravelCompanyContracts.BusinessLogicsContracts
         /// <param name="model"></param>
         /// <returns></returns>
         bool DeliveryOrder(OrderBindingModel model);
+        OrderViewModel? ReadElement(OrderSearchModel model);
     }
 }

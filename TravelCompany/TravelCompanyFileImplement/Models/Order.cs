@@ -15,6 +15,7 @@ namespace TravelCompanyFileImplement.Models
     {
         public int TravelId { get; private set; }
         public int ClientId { get; private set; }
+        public int? ImplementerId { get; set; }
 
         public int Count { get; private set; }
 
@@ -39,6 +40,7 @@ namespace TravelCompanyFileImplement.Models
                 Id = model.Id,
                 TravelId = model.TravelId,
                 ClientId = model.ClientId,
+                ImplementerId = model.ImplementerId,
                 Count = model.Count,
                 Sum = model.Sum,
                 Status = model.Status,
@@ -58,6 +60,7 @@ namespace TravelCompanyFileImplement.Models
                 Id = Convert.ToInt32(element.Attribute("Id")!.Value),
                 TravelId = Convert.ToInt32(element.Element("TravelId")!.Value),
                 ClientId = Convert.ToInt32(element.Element("ClientId")!.Value),
+                ImplementerId = Convert.ToInt32(element.Element("ImplementerId")!.Value),
                 Count = Convert.ToInt32(element.Element("Count")!.Value),
                 Sum = Convert.ToDouble(element.Element("Sum")!.Value),
                 Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), element.Element("Status")!.Value.ToString()),
@@ -81,6 +84,7 @@ namespace TravelCompanyFileImplement.Models
             Id = Id,
             TravelId = TravelId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,
@@ -91,6 +95,8 @@ namespace TravelCompanyFileImplement.Models
         public XElement GetXElement => new("Order",
           new XAttribute("Id", Id),
           new XElement("TravelId", TravelId),
+          new XElement("ClientId", ClientId.ToString()),
+          new XElement("ImplementerId", ImplementerId),
           new XElement("Count", Count.ToString()),
           new XElement("Sum", Sum.ToString()),
           new XElement("Status", Status.ToString()),

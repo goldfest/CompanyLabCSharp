@@ -13,6 +13,7 @@ namespace TravelCompanyContracts.BindingModels
         public int Id { get; set; }
         public int TravelId { get; set; }
         public int ClientId { get; set; }
+        public int? ImplementerId { get; set; }
         public int Count { get; set; }
         public double Sum {  get; set; }
         public OrderStatus Status { get; set; } = OrderStatus.Неизвестен;
