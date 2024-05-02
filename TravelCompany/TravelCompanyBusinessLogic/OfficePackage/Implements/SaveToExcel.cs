@@ -203,7 +203,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
                 _ => 0U,
             };
         }
-        protected override void CreateExcel(ExcelInfo info)
+        protected override void CreateExcel(IDocument info)
         {
             _spreadsheetDocument = SpreadsheetDocument.Create(info.FileName,
            SpreadsheetDocumentType.Workbook);
@@ -326,7 +326,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             };
             mergeCells.Append(mergeCell);
         }
-        protected override void SaveExcel(ExcelInfo info)
+        protected override void SaveExcel(IDocument info)
         {
             if (_spreadsheetDocument == null)
             {

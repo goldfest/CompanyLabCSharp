@@ -12,8 +12,13 @@ namespace TravelCompanyContracts.BusinessLogicsContracts
     {
         List<ReportTravelComponentViewModel> GetTravelComponents();
         List<ReportOrdersViewModel> GetOrders(ReportBindingModel model);
+        List<ReportShopsViewModel> GetShops();
+        List<ReportGroupOrdersViewModel> GetGroupedOrders();
         void SaveTravelsToWordFile(ReportBindingModel model);
         void SaveTravelComponentToExcelFile(ReportBindingModel model);
         void SaveOrdersToPdfFile(ReportBindingModel model);
+        void SaveShopsToWordFile(ReportBindingModel model);
+        void SaveShopsToExcelFile(ReportBindingModel model);
+        void SaveGroupedOrdersToPdfFile(ReportBindingModel model);
     }
 }

@@ -41,6 +41,22 @@ namespace TravelCompanyDatabaseImplement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Shops",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShopName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OpeningDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TravelMaxCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shops", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Travels",
                 columns: table => new
                 {
@@ -86,6 +102,33 @@ namespace TravelCompanyDatabaseImplement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShopTravels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TravelId = table.Column<int>(type: "int", nullable: false),
+                    ShopId = table.Column<int>(type: "int", nullable: false),
+                    Count = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShopTravels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShopTravels_Shops_ShopId",
+                        column: x => x.ShopId,
+                        principalTable: "Shops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShopTravels_Travels_TravelId",
+                        column: x => x.TravelId,
+                        principalTable: "Travels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TravelComponents",
                 columns: table => new
                 {
@@ -123,6 +166,16 @@ namespace TravelCompanyDatabaseImplement.Migrations
                 column: "TravelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShopTravels_ShopId",
+                table: "ShopTravels",
+                column: "ShopId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShopTravels_TravelId",
+                table: "ShopTravels",
+                column: "TravelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TravelComponents_ComponentId",
                 table: "TravelComponents",
                 column: "ComponentId");
@@ -140,10 +193,16 @@ namespace TravelCompanyDatabaseImplement.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "ShopTravels");
+
+            migrationBuilder.DropTable(
                 name: "TravelComponents");
 
             migrationBuilder.DropTable(
                 name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "Shops");
 
             migrationBuilder.DropTable(
                 name: "Components");

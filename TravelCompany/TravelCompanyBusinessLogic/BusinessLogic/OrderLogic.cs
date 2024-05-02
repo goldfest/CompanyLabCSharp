@@ -15,18 +15,17 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 {
     public class OrderLogic : IOrderLogic
     {
-        //Класс с логикой для заказов будет отвечать за получение списка заказов,
-        //создания заказа и смены его статусов. Следует учитывать, что у заказа можно
-        //менять статус на новый, если его текущий статус предшествует новому
 
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        private readonly IShopStorage _shopStorage;
 
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopStorage shopStorage)
         {
             _logger = logger;
             _orderStorage = orderStorage;
-        }
+            _shopStorage = shopStorage;
+        }   
 
         public List<OrderViewModel>? ReadList(OrderSearchModel? model)
         {

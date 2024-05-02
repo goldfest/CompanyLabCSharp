@@ -67,7 +67,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             return properties;
         }
 
-        protected override void CreateWord(WordInfo info)
+        protected override void CreateWord(IDocument info)
         {
             _wordDocument = WordprocessingDocument.Create(info.FileName, WordprocessingDocumentType.Document);
             MainDocumentPart mainPart = _wordDocument.AddMainDocumentPart();
@@ -105,7 +105,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             _docBody.AppendChild(docParagraph);
         }
 
-        protected override void SaveWord(WordInfo info)
+        protected override void SaveWord(IDocument info)
         {
             if (_docBody == null || _wordDocument == null)
             {
@@ -116,6 +116,78 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             _wordDocument.MainDocumentPart!.Document.Save();
 
             _wordDocument.Dispose();
+        }
+
+        private Table? _lastTable;
+        protected override void CreateTable(List<string> columns)
+        {
+            if (_docBody == null)
+                return;
+
+            _lastTable = new Table();
+
+            var tableProp = new TableProperties();
+            tableProp.AppendChild(new TableLayout { Type = TableLayoutValues.Fixed });
+            tableProp.AppendChild(new TableBorders(
+                    new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
+                    new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+                ));
+            tableProp.AppendChild(new TableWidth { Type = TableWidthUnitValues.Auto });
+            _lastTable.AppendChild(tableProp);
+
+            TableGrid tableGrid = new TableGrid();
+            foreach (var column in columns)
+            {
+                tableGrid.AppendChild(new GridColumn() { Width = column });
+            }
+            _lastTable.AppendChild(tableGrid);
+
+            _docBody.AppendChild(_lastTable);
+        }
+
+        protected override void CreateRow(WordRowParameters rowParameters)
+        {
+            if (_docBody == null || _lastTable == null)
+                return;
+
+            TableRow docRow = new TableRow();
+            foreach (var column in rowParameters.Texts)
+            {
+                var docParagraph = new Paragraph();
+                WordParagraph paragraph = new WordParagraph
+                {
+                    Texts = new List<(string, WordTextProperties)> { (column, rowParameters.TextProperties) },
+                    TextProperties = rowParameters.TextProperties
+                };
+
+                docParagraph.AppendChild(CreateParagraphProperties(paragraph.TextProperties));
+
+                foreach (var run in paragraph.Texts)
+                {
+                    var docRun = new Run();
+
+                    var properties = new RunProperties();
+                    properties.AppendChild(new FontSize { Val = run.Item2.Size });
+                    if (run.Item2.Bold)
+                    {
+                        properties.AppendChild(new Bold());
+                    }
+                    docRun.AppendChild(properties);
+
+                    docRun.AppendChild(new Text { Text = run.Item1, Space = SpaceProcessingModeValues.Preserve });
+
+                    docParagraph.AppendChild(docRun);
+                }
+
+                TableCell docCell = new TableCell();
+                docCell.AppendChild(docParagraph);
+                docRow.AppendChild(docCell);
+            }
+            _lastTable.AppendChild(docRow);
         }
     }
 }
