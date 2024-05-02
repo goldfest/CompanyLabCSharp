@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using TravelCompanyBusinessLogic.OfficePackage.Implements;
 using TravelCompanyBusinessLogic.OfficePackage;
-using Microsoft.EntityFrameworkCore.Design;
 
 
 namespace TravelCompany.Forms
@@ -41,16 +40,13 @@ namespace TravelCompany.Forms
             services.AddTransient<IComponentStorage, ComponentStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<ITravelStorage, TravelStorage>();
-            services.AddTransient<IClientStorage, ClientStorage>();
-            services.AddTransient<IImplementerStorage, ImplementerStorage>();
 
             services.AddTransient<IComponentLogic, ComponentLogic>();
             services.AddTransient<IOrderLogic, OrderLogic>();
             services.AddTransient<ITravelLogic, TravelLogic>();
             services.AddTransient<IReportLogic, ReportLogic>();
             services.AddTransient<IClientLogic, ClientLogic>();
-            services.AddTransient<IImplementerLogic, ImplementerLogic>();
-            services.AddTransient<IWorkProcess, WorkModeling>();
+            services.AddTransient<IClientStorage, ClientStorage>();
 
             services.AddTransient<FormMain>();
             services.AddTransient<FormComponent>();
@@ -65,9 +61,6 @@ namespace TravelCompany.Forms
             services.AddTransient<AbstractSaveToWord, SaveToWord>();
             services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
             services.AddTransient<FormClients>();
-            services.AddTransient<FormImplementers>();
-            services.AddTransient<FormImplementer>();
-            services.AddTransient<EntityFrameworkDesignServicesBuilder>();
 
         }
     }

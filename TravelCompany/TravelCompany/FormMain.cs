@@ -19,14 +19,12 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly IOrderLogic _orderLogic;
         private readonly IReportLogic _reportLogic;
-        private readonly IWorkProcess _workProcess;
-        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic, IWorkProcess workProcess)
+        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic)
         {
             InitializeComponent();
             _logger = logger;
             _orderLogic = orderLogic;
             _reportLogic = reportLogic;
-            _workProcess = workProcess;
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -43,10 +41,7 @@ namespace TravelCompany.Forms
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["TravelId"].Visible = false;
-                    dataGridView.Columns["ClientId"].Visible = false;
-                    dataGridView.Columns["ImplementerId"].Visible = false;
-                    dataGridView.Columns["TravelName"].AutoSizeMode =
-                    DataGridViewAutoSizeColumnMode.Fill;
+                    dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
                 _logger.LogInformation("Загрузка заказов");
@@ -203,20 +198,5 @@ Program.ServiceProvider?.GetService(typeof(FormClients));
                 form.ShowDialog();
             }
         }
-        private void employersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var service = Program.ServiceProvider?.GetService(typeof(FormImplementers));
-            if (service is FormImplementers form)
-            {
-                form.ShowDialog();
-            }
-        }
-
-        private void startWorkToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _workProcess.DoWork((Program.ServiceProvider?.GetService(typeof(IImplementerLogic)) as IImplementerLogic)!, _orderLogic);
-            MessageBox.Show("Процесс обработки запущен", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
     }
 }

@@ -67,33 +67,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
                     b.ToTable("Components");
                 });
 
-            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Implementer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImplementerFIO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Qualification")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkExperience")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Implementers");
-                });
-
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -114,9 +87,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
                     b.Property<DateTime?>("DateImplement")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ImplementerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -129,8 +99,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
-
-                    b.HasIndex("ImplementerId");
 
                     b.HasIndex("TravelId");
 
@@ -191,10 +159,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TravelCompanyDatabaseImplement.Models.Implementer", "Implementer")
-                        .WithMany("Order")
-                        .HasForeignKey("ImplementerId");
-
                     b.HasOne("TravelCompanyDatabaseImplement.Models.Travel", "Travel")
                         .WithMany("Orders")
                         .HasForeignKey("TravelId")
@@ -202,8 +166,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
                         .IsRequired();
 
                     b.Navigation("Client");
-
-                    b.Navigation("Implementer");
 
                     b.Navigation("Travel");
                 });
@@ -235,11 +197,6 @@ namespace TravelCompanyDatabaseImplement.Migrations
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Component", b =>
                 {
                     b.Navigation("TravelComponents");
-                });
-
-            modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Implementer", b =>
-                {
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("TravelCompanyDatabaseImplement.Models.Travel", b =>

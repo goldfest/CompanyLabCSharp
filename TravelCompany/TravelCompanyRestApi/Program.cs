@@ -8,14 +8,11 @@ builder.Logging.SetMinimumLevel(LogLevel.Trace);
 builder.Logging.AddLog4Net("log4net.config");
 // Add services to the container.
 builder.Services.AddTransient<IClientStorage, ClientStorage>();
-builder.Services.AddTransient<IImplementerStorage, ImplementerStorage>();
 builder.Services.AddTransient<IOrderStorage, OrderStorage>();
 builder.Services.AddTransient<ITravelStorage, TravelStorage>();
-
 builder.Services.AddTransient<IOrderLogic, OrderLogic>();
 builder.Services.AddTransient<IClientLogic, ClientLogic>();
 builder.Services.AddTransient<ITravelLogic, TravelLogic>();
-builder.Services.AddTransient<IImplementerLogic, ImplementerLogic>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at
 https://aka.ms/aspnetcore/swashbuckle

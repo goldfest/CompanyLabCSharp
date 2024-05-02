@@ -4,7 +4,11 @@ using TravelCompanyContracts.StoragesContracts;
 using TravelCompanyContracts.ViewModels;
 using TravelCompanyDatabaseImplement.Models;
 using Microsoft.EntityFrameworkCore;
-using TravelCompanyDatabaseImplement;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TravelCompanyDatabaseImplement.Implements
 {
@@ -13,41 +17,39 @@ namespace TravelCompanyDatabaseImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             using var context = new TravelCompanyDataBase();
-            return context.Orders.Include(x => x.Travel).Include(x => x.Client).Include(y => y.Implementer).Select(x => x.GetViewModel).ToList();
+            return context.Orders.Include(x => x.Travel)
+            .Include(x => x.Client).Select(x => x.GetViewModel)
+           .ToList();
         }
-
         public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
         {
-            using var context = new TravelCompanyDataBase();
-            if ((!model.DateFrom.HasValue || !model.DateTo.HasValue) && !model.ClientId.HasValue && !model.Status.HasValue)
-            {
-                return new();
-            }
-            return context.Orders.Include(x => x.Travel).Include(x => x.Client).Include(x => x.Implementer).Where(x =>
-                 (model.DateFrom.HasValue && model.DateTo.HasValue && x.DateCreate >= model.DateFrom && x.DateCreate <= model.DateTo) ||
-                 (model.ClientId.HasValue && x.ClientId == model.ClientId) ||
-                 (model.Status.HasValue && x.Status == model.Status))
-                 .Select(x => x.GetViewModel).ToList();
-        }
 
+            using var context = new TravelCompanyDataBase();
+            return context.Orders
+            .Include(x => x.Travel)
+                .Include(x => x.Client).Where(x => (
+                        (!model.Id.HasValue || x.Id == model.Id) &&
+                        (!model.DateFrom.HasValue || x.DateCreate >= model.DateFrom) &&
+                        (!model.DateTo.HasValue || x.DateCreate <= model.DateTo)
+                        &&
+                        (!model.ClientId.HasValue || x.ClientId == model.ClientId)
+                    )
+                )
+           .Select(x => x.GetViewModel)
+           .ToList();
+        }
         public OrderViewModel? GetElement(OrderSearchModel model)
         {
-            if (!model.Id.HasValue && (!model.ImplementerId.HasValue || !model.Status.HasValue))
+            if (!model.Id.HasValue)
             {
-                return new();
+                return null;
             }
             using var context = new TravelCompanyDataBase();
-            return context.Orders.Include(x => x.Travel).Include(x => x.Client).Include(x => x.Implementer).FirstOrDefault(x =>
-                (model.Id.HasValue && x.Id == model.Id) ||
-                (model.ImplementerId.HasValue && x.ImplementerId == model.ImplementerId && x.Status == model.Status))
-                ?.GetViewModel;
+            return context.Orders.Include(x => x.Travel).Include(x => x.Client).FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
         }
-
         public OrderViewModel? Insert(OrderBindingModel model)
         {
             using var context = new TravelCompanyDataBase();
-            if (model == null)
-                return null;
             var newOrder = Order.Create(context, model);
             if (newOrder == null)
             {
@@ -57,29 +59,29 @@ namespace TravelCompanyDatabaseImplement.Implements
             context.SaveChanges();
             return newOrder.GetViewModel;
         }
-
         public OrderViewModel? Update(OrderBindingModel model)
         {
             using var context = new TravelCompanyDataBase();
-            var order = context.Orders.FirstOrDefault(x => x.Id == model.Id);
+            var order = context.Orders.Include(x => x.Travel).Include(x => x.Client).FirstOrDefault(x => x.Id ==
+           model.Id);
             if (order == null)
             {
                 return null;
             }
-            order.Update(context, model);
+            order.Update(model);
             context.SaveChanges();
             return order.GetViewModel;
         }
-
         public OrderViewModel? Delete(OrderBindingModel model)
         {
             using var context = new TravelCompanyDataBase();
-            var order = context.Orders.FirstOrDefault(rec => rec.Id == model.Id);
-            if (order != null)
+            var element = context.Orders.FirstOrDefault(rec => rec.Id ==
+           model.Id);
+            if (element != null)
             {
-                context.Orders.Remove(order);
+                context.Orders.Remove(element);
                 context.SaveChanges();
-                return order.GetViewModel;
+                return element.GetViewModel;
             }
             return null;
         }

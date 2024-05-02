@@ -36,8 +36,6 @@ model)
                         (!model.DateTo.HasValue || x.DateCreate <= model.DateTo)
                         &&
                         (!model.ClientId.HasValue || x.ClientId == model.ClientId)
-                        &&
-                        (!model.ImplementerId.HasValue || x.ImplementerId == model.ImplementerId)
                     )
                 )
            .Select(x => AccessTravelStorage(x.GetViewModel))
