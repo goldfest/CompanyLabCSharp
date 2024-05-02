@@ -107,6 +107,13 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
             {
                 throw new ArgumentException("Магазина не существует");
             }
+
+            var totalSupplyCount = shop.ShopTravels.Values.Sum(supply => supply.Item2) + model.Count;
+            if (totalSupplyCount > shop.TravelMaxCount)
+            {
+                throw new ArgumentException("Количество поставляемых товаров превышает максимальное количество товаров, которое может содержать магазин");
+            }
+
             if (shop.ShopTravels.ContainsKey(model.TravelId))
             {
                 var oldValue = shop.ShopTravels[model.TravelId];
@@ -122,10 +129,6 @@ namespace TravelCompanyBusinessLogic.BusinessLogics
                 if (Travel == null)
                 {
                     throw new ArgumentException($"Поставка: Товар с id:{model.TravelId} не найденн");
-                }
-                if (shop.ShopTravels.Sum(kv => kv.Value.Item2) + model.Count > shop.TravelMaxCount)
-                {
-                    throw new ArgumentException("Превышена максимальная вместимость магазина");
                 }
                 shop.ShopTravels.Add(model.TravelId, (Travel, model.Count));
             }

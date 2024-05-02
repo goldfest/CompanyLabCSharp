@@ -3,6 +3,7 @@ using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.ViewModels;
+using System.Net.Http;
 
 namespace TravelCompanyRestApi.Controllers
 {
