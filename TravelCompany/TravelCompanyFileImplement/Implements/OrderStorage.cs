@@ -22,7 +22,7 @@ namespace TravelCompanyFileImplement.Implements
         public List<OrderViewModel> GetFullList()
         {
             return source.Orders
-            .Select(x => AccessTravelStorage(x.GetViewModel))
+            .Select(x => AccessStorage(x.GetViewModel))
            .ToList();
         }
 
@@ -36,9 +36,11 @@ model)
                         (!model.DateTo.HasValue || x.DateCreate <= model.DateTo)
                         &&
                         (!model.ClientId.HasValue || x.ClientId == model.ClientId)
+                        &&
+                        (!model.Status.HasValue || x.Status == model.Status)
                     )
                 )
-           .Select(x => AccessTravelStorage(x.GetViewModel))
+           .Select(x => AccessStorage(x.GetViewModel))
            .ToList();
         }
 
@@ -48,8 +50,11 @@ model)
             {
                 return null;
             }
-            return AccessTravelStorage(source.Orders
-            .FirstOrDefault(x => (model.Id.HasValue && x.Id == model.Id))?.GetViewModel);
+            return AccessStorage(source.Orders
+            .FirstOrDefault(
+                x => ((model.Id.HasValue && x.Id == model.Id) ||
+                (model.ImplementerId.HasValue && model.Status.HasValue &&
+                x.ImplementerId == model.ImplementerId && x.Status == model.Status)))?.GetViewModel);
         }
 
         public OrderViewModel? Insert(OrderBindingModel model)
@@ -62,7 +67,7 @@ model)
             }
             source.Orders.Add(newOrder);
             source.SaveOrders();
-            return AccessTravelStorage(newOrder.GetViewModel);
+            return AccessStorage(newOrder.GetViewModel);
         }
 
         public OrderViewModel? Update(OrderBindingModel model)
@@ -74,7 +79,7 @@ model)
             }
             order.Update(model);
             source.SaveOrders();
-            return AccessTravelStorage(order.GetViewModel);
+            return AccessStorage(order.GetViewModel);
         }
         public OrderViewModel? Delete(OrderBindingModel model)
         {
@@ -84,33 +89,24 @@ model)
             {
                 source.Orders.Remove(element);
                 source.SaveOrders();
-                return AccessTravelStorage(element.GetViewModel);
+                return AccessStorage(element.GetViewModel);
             }
             return null;
         }
 
-        public OrderViewModel AccessTravelStorage(OrderViewModel model)
+        public OrderViewModel AccessStorage(OrderViewModel model)
         {
             if (model == null)
                 return null;
-            foreach (var Travel in source.Travels)
-            {
-                if (Travel.Id == model.TravelId)
-                {
-                    model.TravelName = Travel.TravelName;
-                    break;
-                }
-            }
-            return model;
-        }
-
-        public OrderViewModel AccessClientStorage(OrderViewModel model)
-        {
-            if (model == null)
-                return null;
+            var iceCream = source.Travels.FirstOrDefault(x => x.Id == model.Id);
             var client = source.Clients.FirstOrDefault(x => x.Id == model.Id);
+            var implementer = source.Implementers.FirstOrDefault(x => x.Id == model.ImplementerId);
+            if (iceCream != null)
+                model.TravelName = iceCream.TravelName;
             if (client != null)
                 model.ClientFIO = client.ClientFIO;
+            if (implementer != null)
+                model.ImplementerFIO = implementer.ImplementerFIO;
             return model;
         }
     }
