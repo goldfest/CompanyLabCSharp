@@ -220,5 +220,16 @@ Program.ServiceProvider?.GetService(typeof(ImplementersForm));
                 form.ShowDialog();
             }
         }
+
+        private void почтаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service =
+Program.ServiceProvider?.GetService(typeof(FormViewMail));
+            if (service is FormViewMail form)
+            {
+                form.ShowDialog();
+            }
+
+        }
     }
 }

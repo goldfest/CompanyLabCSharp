@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace TravelCompanyBusinessLogic.BusinessLogic
 {
@@ -102,12 +103,20 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             if (string.IsNullOrEmpty(model.Email))
             {
                 throw new ArgumentNullException("Нет Email клиента",
-               nameof(model.ClientFIO));
+               nameof(model.Email));
             }
             if (string.IsNullOrEmpty(model.Password))
             {
                 throw new ArgumentNullException("Нет пароля клиента",
                nameof(model.ClientFIO));
+            }
+            if (!Regex.IsMatch(model.Email, @"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"))
+            {
+                throw new ArgumentException("Некорретно введен email клиента", nameof(model.Email));
+            }
+            if (!Regex.IsMatch(model.Password, @"^(?=.*\d)(?=.*\W)(?=.*[^\d\s]).+$"))
+            {
+                throw new ArgumentException("Некорректно введен пароль клиента", nameof(model.Password));
             }
             _logger.LogInformation("Client. ClientFIO:{ClientFIO}." +
                 "Email:{ Email}. Password:{ Password}. Id: { Id} ", model.ClientFIO, model.Email, model.Password, model.Id);
