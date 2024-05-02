@@ -18,7 +18,7 @@ namespace TravelCompanyDatabaseImplement.Implements
         {
             using var context = new TravelCompanyDataBase();
             return context.Orders.Include(x => x.Travel)
-            .Include(x => x.Client).Select(x => x.GetViewModel)
+            .Include(x => x.Client).Include(x => x.Implementer).Select(x => x.GetViewModel)
            .ToList();
         }
         public List<OrderViewModel> GetFilteredList(OrderSearchModel model)
@@ -27,12 +27,14 @@ namespace TravelCompanyDatabaseImplement.Implements
             using var context = new TravelCompanyDataBase();
             return context.Orders
             .Include(x => x.Travel)
-                .Include(x => x.Client).Where(x => (
+                .Include(x => x.Client).Include(x => x.Implementer).Where(x => (
                         (!model.Id.HasValue || x.Id == model.Id) &&
                         (!model.DateFrom.HasValue || x.DateCreate >= model.DateFrom) &&
                         (!model.DateTo.HasValue || x.DateCreate <= model.DateTo)
                         &&
                         (!model.ClientId.HasValue || x.ClientId == model.ClientId)
+                        &&
+                        (!model.Status.HasValue || x.Status == model.Status)
                     )
                 )
            .Select(x => x.GetViewModel)
@@ -40,12 +42,11 @@ namespace TravelCompanyDatabaseImplement.Implements
         }
         public OrderViewModel? GetElement(OrderSearchModel model)
         {
-            if (!model.Id.HasValue)
-            {
-                return null;
-            }
             using var context = new TravelCompanyDataBase();
-            return context.Orders.Include(x => x.Travel).Include(x => x.Client).FirstOrDefault(x => x.Id == model.Id)?.GetViewModel;
+            return context.Orders.Include(x => x.Travel).Include(x => x.Client).Include(x => x.Implementer).FirstOrDefault(
+                x => ((model.Id.HasValue && x.Id == model.Id) ||
+                (model.ImplementerId.HasValue && model.Status.HasValue &&
+                x.ImplementerId == model.ImplementerId && x.Status == model.Status)))?.GetViewModel;
         }
         public OrderViewModel? Insert(OrderBindingModel model)
         {
@@ -62,7 +63,7 @@ namespace TravelCompanyDatabaseImplement.Implements
         public OrderViewModel? Update(OrderBindingModel model)
         {
             using var context = new TravelCompanyDataBase();
-            var order = context.Orders.Include(x => x.Travel).Include(x => x.Client).FirstOrDefault(x => x.Id ==
+            var order = context.Orders.Include(x => x.Travel).Include(x => x.Client).Include(x => x.Implementer).FirstOrDefault(x => x.Id ==
            model.Id);
             if (order == null)
             {

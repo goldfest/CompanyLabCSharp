@@ -23,7 +23,7 @@ namespace TravelCompanyListImplement.Implements
             var result = new List<OrderViewModel>();
             foreach (var order in _source.Orders)
             {
-                result.Add(AccessTravelStorage(order.GetViewModel));
+                result.Add(AccessStorage(order.GetViewModel));
             }
             return result;
         }
@@ -38,7 +38,7 @@ namespace TravelCompanyListImplement.Implements
                         (!model.DateTo.HasValue || order.DateCreate <= model.DateTo) &&
                         (!model.ClientId.HasValue || order.ClientId == model.ClientId)) ;
                 {
-                    result.Add(AccessTravelStorage(order.GetViewModel));
+                    result.Add(AccessStorage(order.GetViewModel));
                 }
             }
             return result;
@@ -51,9 +51,11 @@ namespace TravelCompanyListImplement.Implements
             }
             foreach (var order in _source.Orders)
             {
-                if (model.Id.HasValue && order.Id == model.Id)
+                if ((model.Id.HasValue && order.Id == model.Id) ||
+                (model.ImplementerId.HasValue && model.Status.HasValue &&
+                order.ImplementerId == model.ImplementerId && order.Status == model.Status))
                 {
-                    return order.GetViewModel;
+                    return AccessStorage(order.GetViewModel);
                 }
             }
             return null;
@@ -102,27 +104,21 @@ namespace TravelCompanyListImplement.Implements
             return null;
         }
 
-        public OrderViewModel AccessTravelStorage(OrderViewModel model)
+        public OrderViewModel AccessStorage(OrderViewModel model)
         {
-            foreach (var Travel in _source.Travels)
-            {
-                if (Travel.Id == model.TravelId)
-                {
-                    model.TravelName = Travel.TravelName;
-                    break;
-                }
-            }
-            return model;
-        }
-
-        public OrderViewModel AccessClientStorage(OrderViewModel model)
-        {
-            var client = _source.Clients.FirstOrDefault(x => x.Id == model.ClientId);
+            if (model == null)
+                return null;
+            var travel = _source.Travels.FirstOrDefault(x => x.Id == model.Id);
+            var client = _source.Clients.FirstOrDefault(x => x.Id == model.Id);
+            var implementer = _source.Implementers.FirstOrDefault(x => x.Id == model.ImplementerId);
+            if (travel != null)
+                model.TravelName = travel.TravelName;
             if (client != null)
                 model.ClientFIO = client.ClientFIO;
+            if (implementer != null)
+                model.ImplementerFIO = implementer.ImplementerFIO;
             return model;
         }
-
 
     }
 

@@ -12,19 +12,10 @@ namespace TravelCompanyContracts.BusinessLogicsContracts
     public interface IOrderLogic
     {
         List<OrderViewModel>? ReadList(OrderSearchModel? model);
+        OrderViewModel? ReadElement(OrderSearchModel model);
         bool CreateOrder(OrderBindingModel model);
         bool TakeOrderInWork(OrderBindingModel model);
-        /// <summary>
-        /// Готов
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         bool FinishOrder(OrderBindingModel model);
-        /// <summary>
-        /// Доставлен
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
         bool DeliveryOrder(OrderBindingModel model);
     }
 }

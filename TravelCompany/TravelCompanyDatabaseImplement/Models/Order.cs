@@ -26,6 +26,8 @@ namespace TravelCompanyDatabaseImplement.Models
         [Required]
         public int ClientId { get; private set; }
         public virtual Client Client { get; private set; }
+        public int? ImplementerId { get; private set; } = null;
+        public virtual Implementer? Implementer { get; private set; }
         public static Order? Create(TravelCompanyDataBase context, OrderBindingModel model)
         {
             if (model == null)
@@ -44,6 +46,9 @@ namespace TravelCompanyDatabaseImplement.Models
                 Travel = context.Travels.FirstOrDefault(x => x.Id == model.TravelId),
                 ClientId = model.ClientId,
                 Client = context.Clients.FirstOrDefault(x => x.Id == model.ClientId),
+                ImplementerId = model.ImplementerId,
+                Implementer = (model.ImplementerId.HasValue ? context.Implementers.FirstOrDefault(x => x.Id == model.ImplementerId)
+                : null),
             };
         }
 
@@ -55,12 +60,14 @@ namespace TravelCompanyDatabaseImplement.Models
             }
             Status = model.Status;
             DateImplement = model.DateImplement;
+            ImplementerId = model.ImplementerId;
         }
 
         public OrderViewModel GetViewModel => new()
         {
             TravelId = TravelId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,
@@ -68,7 +75,9 @@ namespace TravelCompanyDatabaseImplement.Models
             DateImplement = DateImplement,
             TravelName = Travel.TravelName,
             Id = Id,
-            ClientFIO = Client.ClientFIO
+            ClientFIO = Client.ClientFIO,
+            ImplementerFIO = (Implementer != null ? Implementer.ImplementerFIO : string.Empty)
+
         };
 
     }

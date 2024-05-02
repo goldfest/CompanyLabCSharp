@@ -47,6 +47,9 @@ namespace TravelCompany.Forms
             services.AddTransient<IReportLogic, ReportLogic>();
             services.AddTransient<IClientLogic, ClientLogic>();
             services.AddTransient<IClientStorage, ClientStorage>();
+            services.AddTransient<IImplementerLogic, ImplementerLogic>();
+            services.AddTransient<IImplementerStorage, ImplementerStorage>();
+            services.AddTransient<IWorkProcess, WorkModeling>();
 
             services.AddTransient<FormMain>();
             services.AddTransient<FormComponent>();
@@ -61,6 +64,8 @@ namespace TravelCompany.Forms
             services.AddTransient<AbstractSaveToWord, SaveToWord>();
             services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
             services.AddTransient<FormClients>();
+            services.AddTransient<ImplementersForm>();
+            services.AddTransient<ImplementerForm>();
 
         }
     }

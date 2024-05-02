@@ -19,12 +19,14 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly IOrderLogic _orderLogic;
         private readonly IReportLogic _reportLogic;
-        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic)
+        private readonly IWorkProcess _workProcess;
+        public FormMain(ILogger<FormMain> logger, IOrderLogic orderLogic, IReportLogic reportLogic, IWorkProcess workProcess)
         {
             InitializeComponent();
             _logger = logger;
             _orderLogic = orderLogic;
             _reportLogic = reportLogic;
+            _workProcess = workProcess;
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -41,6 +43,8 @@ namespace TravelCompany.Forms
                 {
                     dataGridView.DataSource = list;
                     dataGridView.Columns["TravelId"].Visible = false;
+                    dataGridView.Columns["ClientId"].Visible = false;
+                    dataGridView.Columns["ImplementerId"].Visible = false;
                     dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 }
 
@@ -194,6 +198,24 @@ Program.ServiceProvider?.GetService(typeof(FormReportOrders));
             var service =
 Program.ServiceProvider?.GetService(typeof(FormClients));
             if (service is FormClients form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void запускРаботToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _workProcess.DoWork((Program.ServiceProvider?.GetService(typeof(IImplementerLogic
+)) as IImplementerLogic)!, _orderLogic);
+            MessageBox.Show("Процесс обработки запущен", "Сообщение",
+           MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void исполнителиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service =
+Program.ServiceProvider?.GetService(typeof(ImplementersForm));
+            if (service is ImplementersForm form)
             {
                 form.ShowDialog();
             }

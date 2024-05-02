@@ -15,7 +15,7 @@ namespace TravelCompanyFileImplement.Models
     {
         public int TravelId { get; private set; }
         public int ClientId { get; private set; }
-
+        public int? ImplementerId { get; private set; } = null;
         public int Count { get; private set; }
 
         public double Sum { get; private set; }
@@ -43,7 +43,9 @@ namespace TravelCompanyFileImplement.Models
                 Sum = model.Sum,
                 Status = model.Status,
                 DateCreate = model.DateCreate,
-                DateImplement = model.DateImplement
+                DateImplement = model.DateImplement,
+                ImplementerId = model.ImplementerId,
+
             };
         }
 
@@ -58,6 +60,7 @@ namespace TravelCompanyFileImplement.Models
                 Id = Convert.ToInt32(element.Attribute("Id")!.Value),
                 TravelId = Convert.ToInt32(element.Element("TravelId")!.Value),
                 ClientId = Convert.ToInt32(element.Element("ClientId")!.Value),
+                ImplementerId = Convert.ToInt32(element.Element("ImplementerId")!.Value),
                 Count = Convert.ToInt32(element.Element("Count")!.Value),
                 Sum = Convert.ToDouble(element.Element("Sum")!.Value),
                 Status = (OrderStatus)Enum.Parse(typeof(OrderStatus), element.Element("Status")!.Value.ToString()),
@@ -81,6 +84,7 @@ namespace TravelCompanyFileImplement.Models
             Id = Id,
             TravelId = TravelId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,

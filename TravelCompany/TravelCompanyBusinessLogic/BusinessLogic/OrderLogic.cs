@@ -15,17 +15,31 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 {
     public class OrderLogic : IOrderLogic
     {
-        //Класс с логикой для заказов будет отвечать за получение списка заказов,
-        //создания заказа и смены его статусов. Следует учитывать, что у заказа можно
-        //менять статус на новый, если его текущий статус предшествует новому
-
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        static readonly object locker = new object();
 
         public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
         {
             _logger = logger;
             _orderStorage = orderStorage;
+        }
+
+        public OrderViewModel? ReadElement(OrderSearchModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            _logger.LogInformation("ReadElement. Id:{ Id}", model.Id);
+            var element = _orderStorage.GetElement(model);
+            if (element == null)
+            {
+                _logger.LogWarning("ReadElement element not found");
+                return null;
+            }
+            _logger.LogInformation("ReadElement find. Id:{Id}", element.Id);
+            return element;
         }
 
         public List<OrderViewModel>? ReadList(OrderSearchModel? model)
@@ -51,7 +65,6 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
             if (_orderStorage.Insert(model) == null)
             {
-                model.Status = OrderStatus.Неизвестен;
                 _logger.LogWarning("Insert operation failed");
                 return false;
             }
@@ -60,7 +73,10 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
         public bool TakeOrderInWork(OrderBindingModel model)
         {
-            return ToNextStatus(model, OrderStatus.Выполняется);
+            lock (locker)
+            {
+                return ToNextStatus(model, OrderStatus.Выполняется);
+            }
         }
 
         public bool FinishOrder(OrderBindingModel model)
@@ -76,40 +92,22 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
         public bool ToNextStatus(OrderBindingModel model, OrderStatus orderStatus)
         {
             CheckModel(model, false);
-            var element = _orderStorage.GetElement(new OrderSearchModel()
-            {
-                Id = model.Id
-            });
+            var element = _orderStorage.GetElement(new OrderSearchModel { Id = model.Id });
             if (element == null)
             {
-                throw new ArgumentNullException(nameof(element));
-            }
-
-            model.TravelId = element.TravelId;
-            model.DateCreate = element.DateCreate;
-            model.DateImplement = element.DateImplement;
-            model.Status = element.Status;
-            model.Count = element.Count;
-            model.Sum = element.Sum;
-
-            if (model.Status != orderStatus - 1)
-            {
-                _logger.LogWarning("Status update to " + orderStatus + " operation failed");
+                _logger.LogWarning("Read operation failed");
                 return false;
+            }
+            if (element.Status != orderStatus - 1)
+            {
+                _logger.LogWarning("Status change operation failed");
+                throw new InvalidOperationException("Текущий статус заказа не может быть переведен в выбранный");
             }
             model.Status = orderStatus;
-
-            if (model.Status == OrderStatus.Выдан)
-            {
-                model.DateImplement = DateTime.Now;
-            }
-
-            if (_orderStorage.Update(model) == null)
-            {
-                model.Status--;
-                _logger.LogWarning("Changing status operation faled");
-                return false;
-            }
+            if (model.Status == OrderStatus.Готов) model.DateImplement = DateTime.Now;
+            if (element.ImplementerId.HasValue)
+                model.ImplementerId = element.ImplementerId;
+            _orderStorage.Update(model);
             return true;
         }
 
@@ -130,10 +128,6 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             if (model.Sum <= 0)
             {
                 throw new ArgumentNullException("Цена заказа должна быть больше 0", nameof(model.Sum));
-            }
-            if (model.DateImplement.HasValue && model.DateImplement < model.DateCreate)
-            {
-                throw new ArithmeticException($"Дата выдачи заказа {model.DateImplement} должна быть позже даты его создания {model.DateCreate}");
             }
                 _logger.LogInformation("Travel. TravelId:{TravelId}.Count:{Count}.Sum:{Sum}Id:{Id}", model.TravelId, model.Count, model.Sum, model.Id);
         }

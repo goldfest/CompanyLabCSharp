@@ -18,10 +18,13 @@ namespace TravelCompanyContracts.ViewModels
         public int Id { get; set; }
         public int TravelId { get; set; }
         public int ClientId { get; set; }
+        public int? ImplementerId { get; set; } = null;
         [DisplayName("Клиент")]
         public string ClientFIO { get; set; } = string.Empty;
         [DisplayName("Путёвка")]
         public string TravelName { get; set; } = string.Empty;
+        [DisplayName("Исполнитель")]
+        public string ImplementerFIO { get; set; } = string.Empty;
         [DisplayName("Количество")]
         public int Count { get; set; }
         [DisplayName("Сумма")]

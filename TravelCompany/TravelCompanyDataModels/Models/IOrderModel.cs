@@ -6,6 +6,7 @@ namespace TravelCompanyDataModels.Models
     {
         int TravelId { get; }
         int ClientId { get; }
+        int? ImplementerId { get; }
         int Count { get; }
         double Sum { get; }
         OrderStatus Status { get; }

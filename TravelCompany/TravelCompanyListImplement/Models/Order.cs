@@ -16,6 +16,7 @@ namespace TravelCompanyListImplement.Models
         public int Id { get; private set; }
         public int TravelId { get; private set; }
         public int ClientId { get; private set; }
+        public int? ImplementerId { get; private set; }
         public int Count { get; private set; }
         public double Sum { get; private set; }
         public OrderStatus Status { get; private set; }
@@ -37,6 +38,7 @@ namespace TravelCompanyListImplement.Models
                 Status = model.Status,
                 DateCreate = model.DateCreate,
                 DateImplement = model.DateImplement,
+                ImplementerId = model.ImplementerId
             };
         }
         public void Update(OrderBindingModel? model)
@@ -52,12 +54,14 @@ namespace TravelCompanyListImplement.Models
             Status = model.Status;
             DateCreate = model.DateCreate;
             DateImplement = model.DateImplement;
+            ImplementerId = model.ImplementerId;
         }
         public OrderViewModel GetViewModel => new()
         {
             Id = Id,
             TravelId = TravelId,
             ClientId = ClientId,
+            ImplementerId = ImplementerId,
             Count = Count,
             Sum = Sum,
             Status = Status,
