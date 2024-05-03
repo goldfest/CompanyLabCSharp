@@ -220,5 +220,95 @@ Program.ServiceProvider?.GetService(typeof(ImplementersForm));
                 form.ShowDialog();
             }
         }
+
+        private void shopsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormShops));
+            if (service is FormShops form)
+            {
+                form.ShowDialog();
+            }
+
+        }
+
+        private void transactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormCreateSupply));
+            if (service is FormCreateSupply form)
+            {
+                form.ShowDialog();
+            }
+
+        }
+
+        private void SellToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormSellTravels));
+            if (service is FormSellTravels form)
+            {
+                form.ShowDialog();
+            }
+
+        }
+
+        private void ComponentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveTravelsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+        }
+
+        private void ComponentTravelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportTravelComponents));
+            if (service is FormReportTravelComponents form)
+            {
+                form.ShowDialog();
+            }
+
+        }
+
+        private void InfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var dialog = new SaveFileDialog { Filter = "docx|*.docx" };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                _reportLogic.SaveShopsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void BusyShopsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportShop));
+            if (service is FormReportShop form)
+            {
+                form.ShowDialog();
+            }
+        }
+
+        private void OrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportOrders));
+            if (service is FormReportOrders form)
+            {
+                form.ShowDialog();
+            }
+
+        }
+
+        private void GroupOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var service = Program.ServiceProvider?.GetService(typeof(FormReportGroupedOrders));
+            if (service is FormReportGroupedOrders form)
+            {
+                form.ShowDialog();
+            }
+
+        }
     }
 }

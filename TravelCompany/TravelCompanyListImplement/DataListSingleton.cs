@@ -15,6 +15,8 @@ namespace TravelCompanyListImplement
         public List<Travel> Travels { get; set; }
         public List<Client> Clients { get; set; }
         public List<Implementer> Implementers { get; set; }
+        public List<Shop> Shops { get; set; }
+
 
         private DataListSingleton()
         {
@@ -23,6 +25,8 @@ namespace TravelCompanyListImplement
             Travels = new List<Travel>();
             Clients = new List<Client>(); 
             Implementers = new List<Implementer>();
+            Shops = new List<Shop>();
+
 
         }
         public static DataListSingleton GetInstance()

@@ -16,7 +16,7 @@ optionsBuilder)
         {
             if (optionsBuilder.IsConfigured == false)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-D5A5OOG\GOLDFEST;Initial Catalog=TravelCompanyDatabase1;Integrated Security=True;MultipleActiveResultSets=True;;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-D5A5OOG\GOLDFEST;Initial Catalog=Hard;Integrated Security=True;MultipleActiveResultSets=True;;TrustServerCertificate=True");
             }
             base.OnConfiguring(optionsBuilder);
         }
@@ -26,6 +26,8 @@ optionsBuilder)
         public virtual DbSet<Order> Orders { set; get; }
         public virtual DbSet<Client> Clients { set; get; }
         public virtual DbSet<Implementer> Implementers { set; get; }
+        public virtual DbSet<Shop> Shops { get; set; }
+        public virtual DbSet<ShopTravels> ShopTravels { get; set; }
 
     }
 }

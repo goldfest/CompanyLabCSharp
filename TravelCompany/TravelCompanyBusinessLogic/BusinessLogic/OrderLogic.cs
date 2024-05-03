@@ -17,12 +17,15 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
     {
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        private readonly IShopStorage _shopStorage;
+
         static readonly object locker = new object();
 
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopStorage shopStorage)
         {
             _logger = logger;
             _orderStorage = orderStorage;
+            _shopStorage = shopStorage;
         }
 
         public OrderViewModel? ReadElement(OrderSearchModel model)

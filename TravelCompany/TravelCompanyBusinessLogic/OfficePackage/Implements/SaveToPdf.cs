@@ -39,7 +39,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
             style = document.Styles.AddStyle("NormalTitle", "Normal");
             style.Font.Bold = true;
         }
-        protected override void CreatePdf(PdfInfo info)
+        protected override void CreatePdf(IDocument info)
         {
             _document = new Document();
             DefineStyles(_document);
@@ -93,7 +93,7 @@ namespace TravelCompanyBusinessLogic.OfficePackage.Implements
                 row.Cells[i].VerticalAlignment = VerticalAlignment.Center;
             }
         }
-        protected override void SavePdf(PdfInfo info)
+        protected override void SavePdf(IDocument info)
         {
             var renderer = new PdfDocumentRenderer(true)
             {
