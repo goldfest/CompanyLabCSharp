@@ -101,8 +101,9 @@ namespace TravelCompany.Forms
                     ShopName = textBoxName.Text,
                     Adress = textBoxAdress.Text,
                     OpeningDate = dateTimeOpen.Value,
-                    TravelMaxCount = (int)numericUpTravelMaxCount.Value
-                };
+                    TravelMaxCount = (int)numericUpTravelMaxCount.Value,
+                    ShopTravels = null
+            };
                 var operationResult = _id.HasValue ? _logic.Update(model) : _logic.Create(model);
                 if (!operationResult)
                 {

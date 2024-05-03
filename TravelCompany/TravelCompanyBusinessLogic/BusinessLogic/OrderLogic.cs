@@ -1,15 +1,10 @@
-﻿using TravelCompanyContracts.BindingModels;
+﻿using TravelCompanyDataModels.Enums;
+using Microsoft.Extensions.Logging;
+using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.StoragesContracts;
 using TravelCompanyContracts.ViewModels;
-using TravelCompanyDataModels.Enums;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelCompanyBusinessLogic.BusinessLogic
 {
@@ -17,9 +12,8 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
     {
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        static readonly object _locker = new object();
         private readonly IShopStorage _shopStorage;
-
-        static readonly object locker = new object();
 
         public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, IShopStorage shopStorage)
         {
@@ -34,7 +28,8 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            _logger.LogInformation("ReadElement. Id:{ Id}", model.Id);
+            _logger.LogInformation("ReadElement. ClientId:{ClientId}.Status:{Status}.ImplementerId:{ImplementerId}.DateFrom:{DateFrom}.DateTo:{DateTo}OrderId:{Id}",
+                model.ClientId, model.Status, model.ImplementerId, model.DateFrom, model.DateTo, model.Id);
             var element = _orderStorage.GetElement(model);
             if (element == null)
             {
@@ -47,7 +42,8 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
         public List<OrderViewModel>? ReadList(OrderSearchModel? model)
         {
-            _logger.LogInformation("ReadList. OrderId:{Id}", model?.Id);
+            _logger.LogInformation("ReadList. ClientId:{ClientId}.Status:{Status}.ImplementerId:{ImplementerId}.DateFrom:{DateFrom}.DateTo:{DateTo}OrderId:{Id}",
+            model?.ClientId, model?.Status, model?.ImplementerId, model?.DateFrom, model?.DateTo, model?.Id);
             var list = model == null ? _orderStorage.GetFullList() : _orderStorage.GetFilteredList(model);
             if (list == null)
             {
@@ -61,11 +57,9 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
         public bool CreateOrder(OrderBindingModel model)
         {
             CheckModel(model);
-
             if (model.Status != OrderStatus.Неизвестен)
                 return false;
             model.Status = OrderStatus.Принят;
-
             if (_orderStorage.Insert(model) == null)
             {
                 _logger.LogWarning("Insert operation failed");
@@ -76,42 +70,42 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
 
         public bool TakeOrderInWork(OrderBindingModel model)
         {
-            lock (locker)
+            lock (_locker)
             {
-                return ToNextStatus(model, OrderStatus.Выполняется);
+                return ChangeStatus(model, OrderStatus.Выполняется);
             }
         }
 
         public bool FinishOrder(OrderBindingModel model)
         {
-            return ToNextStatus(model, OrderStatus.Готов);
+            return ChangeStatus(model, OrderStatus.Готов);
         }
 
         public bool DeliveryOrder(OrderBindingModel model)
         {
-            return ToNextStatus(model, OrderStatus.Выдан);
-        }
-
-        public bool ToNextStatus(OrderBindingModel model, OrderStatus orderStatus)
-        {
-            CheckModel(model, false);
-            var element = _orderStorage.GetElement(new OrderSearchModel { Id = model.Id });
-            if (element == null)
+            lock (_locker)
             {
-                _logger.LogWarning("Read operation failed");
-                return false;
+                model = FillOrderBindingModel(model);
+                if (model.Status != OrderStatus.Готов && model.Status != OrderStatus.Ожидает)
+                {
+                    _logger.LogWarning("Changing status operation faled: Current-{Status}:required-Выдан.", model.Status);
+                    throw new InvalidOperationException($"Невозможно приствоить статус выдан заказу с текущим статусом {model.Status}");
+                }
+                if (!_shopStorage.RestockingShops(new SupplyBindingModel
+                {
+                    TravelId = model.TravelId,
+                    Count = model.Count
+                }))
+                {
+                    if (model.Status == OrderStatus.Готов || model.Status == OrderStatus.Ожидает)
+                    {
+                        model.Status = OrderStatus.Ожидает;
+                        return UpdateOrder(model);
+                    }
+                }
+                model.Status = OrderStatus.Выдан;
+                return UpdateOrder(model);
             }
-            if (element.Status != orderStatus - 1)
-            {
-                _logger.LogWarning("Status change operation failed");
-                throw new InvalidOperationException("Текущий статус заказа не может быть переведен в выбранный");
-            }
-            model.Status = orderStatus;
-            if (model.Status == OrderStatus.Готов) model.DateImplement = DateTime.Now;
-            if (element.ImplementerId.HasValue)
-                model.ImplementerId = element.ImplementerId;
-            _orderStorage.Update(model);
-            return true;
         }
 
         private void CheckModel(OrderBindingModel model, bool withParams = true)
@@ -126,13 +120,69 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             }
             if (model.Count <= 0)
             {
-                throw new ArgumentNullException("Количество изделий должно быть больше 0", nameof(model.Count));
+                throw new ArgumentException("Колличество пиццы в заказе не может быть меньше 1", nameof(model.Count));
             }
             if (model.Sum <= 0)
             {
-                throw new ArgumentNullException("Цена заказа должна быть больше 0", nameof(model.Sum));
+                throw new ArgumentException("Стоимость заказа на может быть меньше 1", nameof(model.Sum));
             }
-                _logger.LogInformation("Travel. TravelId:{TravelId}.Count:{Count}.Sum:{Sum}Id:{Id}", model.TravelId, model.Count, model.Sum, model.Id);
+            if (model.DateImplement.HasValue && model.DateImplement < model.DateCreate)
+            {
+                throw new ArithmeticException($"Дата выдачи заказа {model.DateImplement} не может быть раньше даты его создания {model.DateCreate}");
+            }
+            _logger.LogInformation("Travel. TravelId:{TravelId}.Count:{Count}.Sum:{Sum}Id:{Id}",
+                model.TravelId, model.Count, model.Sum, model.Id);
+        }
+        private bool ChangeStatus(OrderBindingModel model, OrderStatus requiredStatus)
+        {
+            model = FillOrderBindingModel(model);
+
+            if (requiredStatus - model.Status == 1)
+            {
+                model.Status = requiredStatus;
+                if (model.Status == OrderStatus.Готов)
+                    model.DateImplement = DateTime.Now;
+                return UpdateOrder(model);
+            }
+            _logger.LogWarning("Changing status operation faled: Current-{Status}:required-{requiredStatus}.", model.Status, requiredStatus);
+            throw new InvalidOperationException($"Невозможно приствоить статус {requiredStatus} заказу с текущим статусом {model.Status}");
+        }
+
+        private OrderBindingModel FillOrderBindingModel(OrderBindingModel model)
+        {
+            CheckModel(model, false);
+            var element = _orderStorage.GetElement(new OrderSearchModel()
+            {
+                Id = model.Id
+            });
+            if (element == null)
+            {
+                throw new InvalidOperationException(nameof(element));
+            }
+            model.Id = element.Id;
+            model.DateCreate = element.DateCreate;
+            model.TravelId = element.TravelId;
+            model.DateImplement = element.DateImplement;
+            model.ClientId = element.ClientId;
+            model.Status = element.Status;
+            model.Count = element.Count;
+            model.Sum = element.Sum;
+            if (!model.ImplementerId.HasValue)
+            {
+                model.ImplementerId = element.ImplementerId;
+            }
+            return model;
+        }
+
+        private bool UpdateOrder(OrderBindingModel model)
+        {
+            if (_orderStorage.Update(model) == null)
+            {
+                _logger.LogWarning("Update operation failed");
+                return false;
+            }
+            _logger.LogWarning("Update operation sucsess");
+            return true;
         }
     }
 }

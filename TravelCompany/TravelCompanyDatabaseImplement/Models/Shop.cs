@@ -75,27 +75,32 @@ namespace TravelCompanyDatabaseImplement.Models
 
         public void UpdateTravels(TravelCompanyDataBase context, ShopBindingModel model)
         {
-            var ShopTravels = context.ShopTravels.Where(rec => rec.ShopId == model.Id).ToList();
-            if (ShopTravels != null && ShopTravels.Count > 0)
+            if (model.ShopTravels == null)
+                return;
+            var shopTravels = context.ShopTravels.Where(rec =>
+           rec.ShopId == model.Id).ToList();
+            if (shopTravels != null && shopTravels.Count > 0)
             {
-                context.ShopTravels.RemoveRange(ShopTravels.Where(rec => !model.ShopTravels.ContainsKey(rec.TravelId)));
+                context.ShopTravels.RemoveRange(shopTravels.Where(rec
+=> !model.ShopTravels.ContainsKey(rec.TravelId)));
+
                 context.SaveChanges();
-                ShopTravels = context.ShopTravels.Where(rec => rec.ShopId == model.Id).ToList();
-                foreach (var updateTravel in ShopTravels)
+                foreach (var updateTravel in shopTravels)
                 {
-                    updateTravel.Count = model.ShopTravels[updateTravel.TravelId].Item2;
+                    updateTravel.Count =
+                   model.ShopTravels[updateTravel.TravelId].Item2;
                     model.ShopTravels.Remove(updateTravel.TravelId);
                 }
                 context.SaveChanges();
             }
             var shop = context.Shops.First(x => x.Id == Id);
-            foreach (var ar in model.ShopTravels)
+            foreach (var pc in model.ShopTravels)
             {
                 context.ShopTravels.Add(new ShopTravels
                 {
                     Shop = shop,
-                    Travel = context.Travels.First(x => x.Id == ar.Key),
-                    Count = ar.Value.Item2
+                    Travel = context.Travels.First(x => x.Id == pc.Key),
+                    Count = pc.Value.Item2
                 });
                 context.SaveChanges();
             }
