@@ -12,7 +12,7 @@ using TravelCompanyDatabaseImplement;
 namespace TravelCompanyDatabaseImplement.Migrations
 {
     [DbContext(typeof(TravelCompanyDataBase))]
-    [Migration("20240503064033_Initial-Create")]
+    [Migration("20240506091037_Initial-Create")]
     partial class InitialCreate
     {
         /// <inheritdoc />
