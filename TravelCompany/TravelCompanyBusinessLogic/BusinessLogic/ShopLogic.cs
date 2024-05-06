@@ -10,7 +10,7 @@ using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.StoragesContracts;
 using TravelCompanyContracts.ViewModels;
 
-namespace TravelCompanyBusinessLogic.BusinessLogics
+namespace TravelCompanyBusinessLogic.BusinessLogic
 {
     public class ShopLogic : IShopLogic
     {

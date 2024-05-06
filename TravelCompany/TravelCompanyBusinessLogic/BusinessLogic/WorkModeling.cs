@@ -5,7 +5,7 @@ using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.ViewModels;
 using TravelCompanyDataModels.Enums;
 
-namespace TravelCompanyBusinessLogic.BusinessLogics
+namespace TravelCompanyBusinessLogic.BusinessLogic
 {
     public class WorkModeling : IWorkProcess
     {
