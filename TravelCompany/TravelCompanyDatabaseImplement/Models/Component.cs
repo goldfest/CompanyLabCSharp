@@ -8,16 +8,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
+    [DataContract]
     public class Component : IComponentModel
     {
+        [DataMember]
         public int Id { get; private set; }
+
+        [DataMember]
         [Required]
         public string ComponentName { get; private set; } = string.Empty;
+
+        [DataMember]
         [Required]
         public double Cost { get; set; }
+
         [ForeignKey("ComponentId")]
         public virtual List<TravelComponent> TravelComponents { get; set; } =
        new();

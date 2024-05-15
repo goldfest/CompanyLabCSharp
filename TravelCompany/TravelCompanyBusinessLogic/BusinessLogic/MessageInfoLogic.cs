@@ -5,7 +5,7 @@ using TravelCompanyContracts.StoragesContracts;
 using TravelCompanyContracts.ViewModels;
 using Microsoft.Extensions.Logging;
 
-namespace IceCreamBusinessLogic.BusinessLogic
+namespace TravelCompanyBusinessLogic.BusinessLogic
 {
 	public class MessageInfoLogic : IMessageInfoLogic
 	{

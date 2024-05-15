@@ -5,27 +5,46 @@ using TravelCompanyDataModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
+    [DataContract]
     public class Order : IOrderModel
     {
+        [DataMember]
         public int Id { get; private set; }
+
+        [DataMember]
         [Required]
         public int Count { get; private set; }
+
+        [DataMember]
         [Required]
         public double Sum { get; private set; }
+
+        [DataMember]
         [Required]
         public OrderStatus Status { get; private set; }
+
+        [DataMember]
         [Required]
         public DateTime DateCreate { get; private set; }
+
+        [DataMember]
         public DateTime? DateImplement { get; private set; }
+
+        [DataMember]
         [Required]
         public int TravelId { get; private set; }
         public virtual Travel Travel { get; private set; }
+
+        [DataMember]
         [Required]
         public int ClientId { get; private set; }
         public virtual Client Client { get; private set; }
+
+        [DataMember]
         public int? ImplementerId { get; private set; } = null;
         public virtual Implementer? Implementer { get; private set; }
         public static Order? Create(TravelCompanyDataBase context, OrderBindingModel model)

@@ -8,19 +8,30 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
-	public class Implementer : IImplementerModel
+    [DataContract]
+    public class Implementer : IImplementerModel
 	{
-		public int Id { get; private set; }
-		[Required]
+        [DataMember]
+        public int Id { get; private set; }
+
+        [DataMember]
+        [Required]
 		public string ImplementerFIO { get; private set; } = string.Empty;
-		[Required]
+
+        [DataMember]
+        [Required]
 		public string Password { get; set; } = string.Empty;
-		[Required]
+
+        [DataMember]
+        [Required]
 		public int Qualification { get; set; } = 0;
-		[Required]
+
+        [DataMember]
+        [Required]
 		public int WorkExperience { get; set; } = 0;
 		[ForeignKey("ImplementerId")]
 		public virtual List<Order> Orders { get; set; } =

@@ -9,7 +9,8 @@ using TravelCompanyBusinessLogic.OfficePackage.Implements;
 using TravelCompanyBusinessLogic.OfficePackage;
 using TravelCompanyBusinessLogic.MailWorker;
 using TravelCompanyContracts.BindingModels;
-using IceCreamBusinessLogic.BusinessLogic;
+using TravelCompanyContracts.DI;
+
 
 
 namespace TravelCompany.Forms
@@ -27,86 +28,69 @@ namespace TravelCompany.Forms
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            InitDependency();
             try
             {
-                var mailSender =
-                _serviceProvider.GetService<AbstractMailWorker>();
+                var mailSender = DependencyManager.Instance.Resolve<AbstractMailWorker>();
                 mailSender?.MailConfig(new MailConfigBindingModel
                 {
-                    MailLogin =
-                System.Configuration.ConfigurationManager.AppSettings["MailLogin"] ??
-                string.Empty,
-                    MailPassword =
-                System.Configuration.ConfigurationManager.AppSettings["MailPassword"] ??
-                string.Empty,
-                    SmtpClientHost =
-                System.Configuration.ConfigurationManager.AppSettings["SmtpClientHost"] ??
-                string.Empty,
-                    SmtpClientPort =
-                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SmtpClientPort"]),
-                    PopHost =
-                System.Configuration.ConfigurationManager.AppSettings["PopHost"] ?? string.Empty,
-                    PopPort =
-                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["PopPort"])
+                    MailLogin = System.Configuration.ConfigurationManager.AppSettings["MailLogin"] ?? string.Empty,
+                    MailPassword = System.Configuration.ConfigurationManager.AppSettings["MailPassword"] ?? string.Empty,
+                    SmtpClientHost = System.Configuration.ConfigurationManager.AppSettings["SmtpClientHost"] ?? string.Empty,
+                    SmtpClientPort = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SmtpClientPort"]),
+                    PopHost = System.Configuration.ConfigurationManager.AppSettings["PopHost"] ?? string.Empty,
+                    PopPort = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["PopPort"])
                 });
-                // создаем таймер
-                var timer = new System.Threading.Timer(new
-                TimerCallback(MailCheck!), null, 0, 100000);
+
+                var timer = new System.Threading.Timer(new TimerCallback(MailCheck!), null, 0, 100000);
             }
             catch (Exception ex)
             {
-                var logger = _serviceProvider.GetService<ILogger>();
-                logger?.LogError(ex, "Ошибка работы с почтой");
+                var logger = DependencyManager.Instance.Resolve<ILogger>();
+                logger?.LogError(ex, "Mails Problem");
             }
-
-            Application.Run(_serviceProvider.GetRequiredService<FormMain>());
+            Application.Run(DependencyManager.Instance.Resolve<FormMain>());
         }
-        private static void ConfigureServices(ServiceCollection services)
+        private static void InitDependency()
         {
-            services.AddLogging(option =>
+            DependencyManager.InitDependency();
+
+            DependencyManager.Instance.AddLogging(option =>
             {
                 option.SetMinimumLevel(LogLevel.Information);
                 option.AddNLog("nlog.config");
             });
-            services.AddTransient<IComponentStorage, ComponentStorage>();
-            services.AddTransient<IOrderStorage, OrderStorage>();
-            services.AddTransient<ITravelStorage, TravelStorage>();
-            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
 
-            services.AddTransient<IComponentLogic, ComponentLogic>();
-            services.AddTransient<IOrderLogic, OrderLogic>();
-            services.AddTransient<ITravelLogic, TravelLogic>();
-            services.AddTransient<IReportLogic, ReportLogic>();
-            services.AddTransient<IClientLogic, ClientLogic>();
-            services.AddTransient<IClientStorage, ClientStorage>();
-            services.AddTransient<IImplementerLogic, ImplementerLogic>();
-            services.AddTransient<IImplementerStorage, ImplementerStorage>();
-            services.AddTransient<IWorkProcess, WorkModeling>();
-            services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
+            DependencyManager.Instance.RegisterType<IComponentLogic, ComponentLogic>();
+            DependencyManager.Instance.RegisterType<IOrderLogic, OrderLogic>();
+            DependencyManager.Instance.RegisterType<ITravelLogic, TravelLogic>();
+            DependencyManager.Instance.RegisterType<IReportLogic, ReportLogic>();
+            DependencyManager.Instance.RegisterType<IClientLogic, ClientLogic>();
+            DependencyManager.Instance.RegisterType<IImplementerLogic, ImplementerLogic>();
+            DependencyManager.Instance.RegisterType<IMessageInfoLogic, MessageInfoLogic>();
+            DependencyManager.Instance.RegisterType<IBackUpLogic, BackUpLogic>();
+            DependencyManager.Instance.RegisterType<IWorkProcess, WorkModeling>();
 
-            services.AddTransient<FormMain>();
-            services.AddTransient<FormComponent>();
-            services.AddTransient<FormComponents>();
-            services.AddTransient<FormCreateOrder>();
-            services.AddTransient<FormTravel>();
-            services.AddTransient<FormTravelComponent>();
-            services.AddTransient<FormTravels>();
-            services.AddTransient<FormReportTravelComponents>();
-            services.AddTransient<FormReportOrders>();
-            services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
-            services.AddTransient<AbstractSaveToWord, SaveToWord>();
-            services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
-            services.AddSingleton<AbstractMailWorker, MailKitWorker>();
-            services.AddTransient<FormClients>();
-            services.AddTransient<ImplementersForm>();
-            services.AddTransient<ImplementerForm>();
-            services.AddTransient<FormViewMail>();
+            DependencyManager.Instance.RegisterType<AbstractSaveToExcel, SaveToExcel>();
+            DependencyManager.Instance.RegisterType<AbstractSaveToWord, SaveToWord>();
+            DependencyManager.Instance.RegisterType<AbstractSaveToPdf, SaveToPdf>();
+            DependencyManager.Instance.RegisterType<AbstractMailWorker, MailKitWorker>();
+
+            DependencyManager.Instance.RegisterType<FormMain>();
+            DependencyManager.Instance.RegisterType<FormComponent>();
+            DependencyManager.Instance.RegisterType<FormComponents>();
+            DependencyManager.Instance.RegisterType<FormCreateOrder>();
+            DependencyManager.Instance.RegisterType<FormTravel>();
+            DependencyManager.Instance.RegisterType<FormTravelComponent>();
+            DependencyManager.Instance.RegisterType<FormTravels>();
+            DependencyManager.Instance.RegisterType<FormReportTravelComponents>();
+            DependencyManager.Instance.RegisterType<FormReportOrders>();
+            DependencyManager.Instance.RegisterType<FormClients>();
+            DependencyManager.Instance.RegisterType<ImplementersForm>();
+            DependencyManager.Instance.RegisterType<ImplementerForm>();
+            DependencyManager.Instance.RegisterType<FormViewMail>();
 
         }
-        private static void MailCheck(object obj) =>
-ServiceProvider?.GetService<AbstractMailWorker>()?.MailCheck();
+        private static void MailCheck(object obj) => DependencyManager.Instance.Resolve<AbstractMailWorker>()?.MailCheck();
     }
 }
