@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TravelCompanyContracts.DI;
 
 namespace TravelCompany.Forms
 {
@@ -51,13 +52,10 @@ namespace TravelCompany.Forms
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var service = Program.ServiceProvider?.GetService(typeof(FormComponent));
-            if (service is FormComponent form)
+            var form = DependencyManager.Instance.Resolve<FormComponent>();
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    LoadData();
-                }
+                LoadData();
             }
         }
 
@@ -65,14 +63,12 @@ namespace TravelCompany.Forms
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var service = Program.ServiceProvider?.GetService(typeof(FormComponent));
-                if (service is FormComponent form)
+                var form = DependencyManager.Instance.Resolve<FormComponent>();
+
+                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadData();
-                    }
+                    LoadData();
                 }
             }
         }

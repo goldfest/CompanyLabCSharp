@@ -16,12 +16,15 @@ namespace TravelCompanyFileImplement
         private readonly string TravelFileName = "Travel.xml";
         private readonly string ClientFileName = "Client.xml";
         private readonly string ImplementerFileName = "Implementer.xml";
+        private readonly string MessageInfoFileName = "MessageInfo.xml";
 
         public List<Component> Components { get; private set; }
         public List<Order> Orders { get; private set; }
         public List<Travel> Travels { get; private set; }
         public List<Client> Clients { get; private set; }
         public List<Implementer> Implementers { get; private set; }
+        public List<MessageInfo> Messages { get; private set; }
+
 
         public static DataFileSingleton GetInstance()
         {
@@ -38,6 +41,8 @@ namespace TravelCompanyFileImplement
 "Clients", x => x.GetXElement);
         public void SaveImplementers() => SaveData(Implementers, ImplementerFileName,
 "Implementers", x => x.GetXElement);
+        public void SaveMessages() => SaveData(Orders, ImplementerFileName, "Messages", x => x.GetXElement);
+
         private DataFileSingleton()
         {
             Components = LoadData(ComponentFileName, "Component", x => Component.Create(x)!)!;
@@ -47,6 +52,8 @@ namespace TravelCompanyFileImplement
            Client.Create(x)!)!;
             Implementers = LoadData(ImplementerFileName, "Implementer", x =>
 Implementer.Create(x)!)!;
+            Messages = LoadData(MessageInfoFileName, "MessageInfo", x => MessageInfo.Create(x)!)!;
+
         }
         private static List<T>? LoadData<T>(string filename, string xmlNodeName, Func<XElement, T> selectFunction)
         {

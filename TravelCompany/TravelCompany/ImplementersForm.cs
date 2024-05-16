@@ -33,22 +33,9 @@ namespace TravelCompany.Forms
 		{
 			try
 			{
-				var list = _logic.ReadList(null);
-				if (list != null)
-				{
-					dataGridView1.DataSource = list;
-					dataGridView1.Columns["Id"].Visible = false;
-					dataGridView1.Columns["ImplementerFIO"].AutoSizeMode =
-				   DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView1.Columns["Password"].AutoSizeMode =
-				   DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView1.Columns["Qualification"].AutoSizeMode =
-				   DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView1.Columns["WorkExperience"].AutoSizeMode =
-				   DataGridViewAutoSizeColumnMode.Fill;
-				}
-				_logger.LogInformation("Загрузка компонентов");
-			}
+                dataGridView1.FillAndConfigGrid(_logic.ReadList(null));
+                _logger.LogInformation("Загрузка исполнителей");
+            }
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Ошибка загрузки исполнителей");

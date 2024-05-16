@@ -9,14 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyFileImplement.Models
 {
+    [DataContract]
+
     public class Client : IClientModel
     {
+        [DataMember]
         public int Id { get; private set; }
+        [DataMember]
         public string ClientFIO { get; private set; } = string.Empty;
+        [DataMember]
         public string Email { get; set; } = string.Empty;
+        [DataMember]
         public string Password { get; set; } = string.Empty;
         public static Client? Create(ClientBindingModel model)
         {

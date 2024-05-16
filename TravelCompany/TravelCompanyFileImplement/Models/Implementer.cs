@@ -7,17 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyFileImplement.Models
 {
-	public class Implementer : IImplementerModel
+    [DataContract]
+    public class Implementer : IImplementerModel
 	{
-		public int Id { get; private set; }
-		public string ImplementerFIO { get; private set; } = string.Empty;
-		public string Password { get; set; } = string.Empty;
-		public int Qualification { get; set; } = 0;
-		public int WorkExperience { get; set; } = 0;
-		public static Implementer? Create(ImplementerBindingModel model)
+        [DataMember]
+        public int Id { get; private set; }
+        [DataMember]
+        public string ImplementerFIO { get; private set; } = string.Empty;
+        [DataMember]
+        public string Password { get; set; } = string.Empty;
+        [DataMember]
+        public int Qualification { get; set; } = 0;
+        [DataMember]
+        public int WorkExperience { get; set; } = 0;
+        public static Implementer? Create(ImplementerBindingModel model)
 		{
 			if (model == null)
 			{

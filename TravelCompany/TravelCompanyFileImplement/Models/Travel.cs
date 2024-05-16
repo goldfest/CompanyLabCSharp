@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyFileImplement.Models
 {
+    [DataContract]
     public class Travel : ITravelModel
     {
+        [DataMember]
         public int Id { get; private set; }
+        [DataMember]
         public string TravelName { get; private set; } = string.Empty;
+        [DataMember]
         public double Price { get; private set; }
         public Dictionary<int, int> Components { get; private set; } = new();
         private Dictionary<int, (IComponentModel, int)>? _TravelComponents = null;
