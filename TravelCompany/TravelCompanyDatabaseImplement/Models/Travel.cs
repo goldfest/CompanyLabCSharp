@@ -8,18 +8,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
+    [DataContract]
     public class Travel : ITravelModel
     {
+
+        [DataMember]
         public int Id { get; set; }
+
+        [DataMember]
         [Required]
         public string TravelName { get; set; } = string.Empty;
+
+        [DataMember]
         [Required]
         public double Price { get; set; }
-        private Dictionary<int, (IComponentModel, int)>? _TravelComponents =
-       null;
+
+        private Dictionary<int, (IComponentModel, int)>? _TravelComponents = null;
+
+        [DataMember]
         [NotMapped]
         public Dictionary<int, (IComponentModel, int)> TravelComponents
         {

@@ -23,6 +23,8 @@ namespace TravelCompanyListImplement.Models
 
         public string Body { get; private set; } = string.Empty;
 
+        public int Id => throw new NotImplementedException();
+
         public static MessageInfo? Create(MessageInfoBindingModel model)
         {
             if (model == null)

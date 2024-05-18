@@ -2,23 +2,39 @@
 using TravelCompanyContracts.ViewModels;
 using TravelCompanyDataModels.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyDatabaseImplement.Models
 {
 	public class MessageInfo : IMessageInfoModel
 	{
-		[Key]
-		public string MessageId { get; private set; } = string.Empty;
+        [NotMapped]
+        public int Id { get; private set; }
 
-		public int? ClientId { get; private set; }
+        [DataMember]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string MessageId { get; private set; } = string.Empty;
 
-		public string SenderName { get; private set; } = string.Empty;
+        [DataMember]
+        public int? ClientId { get; private set; }
 
-		public DateTime DateDelivery { get; private set; } = DateTime.Now;
+        [DataMember]
+        [Required]
+        public string SenderName { get; private set; } = string.Empty;
 
-		public string Subject { get; private set; } = string.Empty;
+        [DataMember]
+        [Required]
+        public DateTime DateDelivery { get; private set; } = DateTime.Now;
 
-		public string Body { get; private set; } = string.Empty;
+        [DataMember]
+        [Required]
+        public string Subject { get; private set; } = string.Empty;
+
+        [DataMember]
+        [Required]
+        public string Body { get; private set; } = string.Empty;
 
 		public Client? Client { get; private set; }
 

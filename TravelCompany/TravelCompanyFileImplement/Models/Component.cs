@@ -7,13 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Runtime.Serialization;
 
 namespace TravelCompanyFileImplement.Models
 {
+    [DataContract]
     public class Component : IComponentModel
     {
+        [DataMember]
         public int Id { get; private set; }
+        [DataMember]
         public string ComponentName { get; private set; } = string.Empty;
+        [DataMember]
         public double Cost { get; set; }
         public static Component? Create(ComponentBindingModel model)
         {

@@ -1,39 +1,36 @@
-﻿using TravelCompanyDataModels;
-using TravelCompanyDataModels.Enums;
+﻿using TravelCompanyDataModels.Enums;
 using TravelCompanyDataModels.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TravelCompanyDataModels.Enums;
-using TravelCompanyDataModels.Models;
+using TravelCompanyContracts.Attributes;
+
 
 namespace TravelCompanyContracts.ViewModels
 {
     public class OrderViewModel : IOrderModel
     {
-        [DisplayName("Номер")]
+        [Column(title: "Номер", width: 90)]
         public int Id { get; set; }
+        [Column(visible: false)]
         public int TravelId { get; set; }
+        [Column(visible: false)]
         public int ClientId { get; set; }
+        [Column(visible: false)]
         public int? ImplementerId { get; set; } = null;
-        [DisplayName("Клиент")]
+        [Column(title: "Клиент", width: 190)]
         public string ClientFIO { get; set; } = string.Empty;
-        [DisplayName("Путёвка")]
+        [Column(title: "Путёвка", gridViewAutoSize: GridViewAutoSize.Fill, isUseAutoSize: true)]
         public string TravelName { get; set; } = string.Empty;
-        [DisplayName("Исполнитель")]
+        [Column(title: "Исполнитель", width: 150)]
         public string ImplementerFIO { get; set; } = string.Empty;
-        [DisplayName("Количество")]
+        [Column(title: "Количество", width: 100)]
         public int Count { get; set; }
-        [DisplayName("Сумма")]
+        [Column(title: "Сумма", width: 120)]
         public double Sum { get; set; }
-        [DisplayName("Статус")]
+        [Column(title: "Статус", width: 70)]
         public OrderStatus Status { get; set; } = OrderStatus.Неизвестен;
-        [DisplayName("Дата создания")]
+        [Column(title: "Дата создания", width: 120)]
         public DateTime DateCreate { get; set; } = DateTime.Now;
-        [DisplayName("Дата выполнения")]
+        [Column(title: "Дата выполнения", width: 120)]
         public DateTime? DateImplement { get; set; }
     }
 }

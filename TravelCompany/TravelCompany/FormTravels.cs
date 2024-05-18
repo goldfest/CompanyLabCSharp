@@ -11,6 +11,7 @@ using TravelCompany;
 using TravelCompanyContracts.BindingModels;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using Microsoft.Extensions.Logging;
+using TravelCompanyContracts.DI;
 
 namespace TravelCompany.Forms
 {
@@ -34,14 +35,7 @@ namespace TravelCompany.Forms
         {
             try
             {
-                var list = _logic.ReadList(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns["Id"].Visible = false;
-                    dataGridView.Columns["TravelComponents"].Visible = false;
-                    dataGridView.Columns["TravelName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                dataGridView.FillAndConfigGrid(_logic.ReadList(null));
                 _logger.LogInformation("Загрузка путёвок");
             }
             catch (Exception ex)
@@ -52,13 +46,10 @@ namespace TravelCompany.Forms
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var service = Program.ServiceProvider?.GetService(typeof(FormTravel));
-            if (service is FormTravel form)
+            var form = DependencyManager.Instance.Resolve<FormTravel>();
+            if (form.ShowDialog() == DialogResult.OK)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    LoadData();
-                }
+                LoadData();
             }
         }
 
@@ -66,14 +57,11 @@ namespace TravelCompany.Forms
         {
             if (dataGridView.SelectedRows.Count == 1)
             {
-                var service = Program.ServiceProvider?.GetService(typeof(FormTravel));
-                if (service is FormTravel form)
+                var form = DependencyManager.Instance.Resolve<FormTravel>();
+                form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
+                if (form.ShowDialog() == DialogResult.OK)
                 {
-                    form.Id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells["Id"].Value);
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadData();
-                    }
+                    LoadData();
                 }
             }
         }

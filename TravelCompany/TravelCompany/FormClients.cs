@@ -28,18 +28,7 @@ namespace TravelCompany.Forms
         {
             try
             {
-                var list = _logic.ReadList(null);
-                if (list != null)
-                {
-                    DataGridView.DataSource = list;
-                    DataGridView.Columns["Id"].Visible = false;
-                    DataGridView.Columns["ClientFIO"].AutoSizeMode =
-                   DataGridViewAutoSizeColumnMode.Fill;
-                    DataGridView.Columns["Email"].AutoSizeMode =
-                   DataGridViewAutoSizeColumnMode.Fill;
-                    DataGridView.Columns["Password"].AutoSizeMode =
-                   DataGridViewAutoSizeColumnMode.Fill;
-                }
+                DataGridView.FillAndConfigGrid(_logic.ReadList(null));
                 _logger.LogInformation("Загрузка клиентов");
             }
             catch (Exception ex)

@@ -5,21 +5,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.Serialization;
+
 
 namespace TravelCompanyDatabaseImplement.Models
 {
-	public class Client : IClientModel
-	{
-		public int Id { get; private set; }
+    [DataContract]
 
-		[Required]
+    public class Client : IClientModel
+	{
+        [DataMember]
+        public int Id { get; private set; }
+
+        [DataMember]
+        [Required]
 		public string ClientFIO { get; set; } = string.Empty;
-		[Required]
+
+        [DataMember]
+        [Required]
 		public string Email { get; set; } = string.Empty;
-		[Required]
+
+        [DataMember]
+        [Required]
 		public string Password { get; set; } = string.Empty;
 
 		[ForeignKey("ClientId")]

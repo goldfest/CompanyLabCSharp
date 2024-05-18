@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TravelCompanyDataModels
 {
-	public interface IImplementerModel
-	{
+	public interface IImplementerModel : IId
+    {
 		string ImplementerFIO { get; }
 		string Password { get; }
 		int WorkExperience { get; }

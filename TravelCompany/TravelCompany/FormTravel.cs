@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using TravelCompanyContracts.BusinessLogicsContracts;
 using TravelCompanyContracts.SearchModels;
 using TravelCompanyContracts.BindingModels;
+using TravelCompanyContracts.DI;
+using TravelCompanyDatabaseImplement.Models;
 
 namespace TravelCompany.Forms
 {
@@ -20,14 +22,14 @@ namespace TravelCompany.Forms
         private readonly ILogger _logger;
         private readonly ITravelLogic _logic;
         private int? _id;
-        private Dictionary<int, (IComponentModel, int)> _productComponents;
+        private Dictionary<int, (IComponentModel, int)> _travelComponents;
         public int Id { set { _id = value; } }
         public FormTravel(ILogger<FormTravel> logger, ITravelLogic logic)
         {
             InitializeComponent();
             _logger = logger;
             _logic = logic;
-            _productComponents = new Dictionary<int, (IComponentModel, int)>();
+            _travelComponents = new Dictionary<int, (IComponentModel, int)>();
         }
         private void FormTravel_Load(object sender, EventArgs e)
         {
@@ -44,7 +46,7 @@ namespace TravelCompany.Forms
                     {
                         textBoxName.Text = view.TravelName;
                         textBoxPrice.Text = view.Price.ToString();
-                        _productComponents = view.TravelComponents ?? new Dictionary<int, (IComponentModel, int)>();
+                        _travelComponents = view.TravelComponents ?? new Dictionary<int, (IComponentModel, int)>();
                         LoadData();
                     }
                 }
@@ -59,10 +61,10 @@ namespace TravelCompany.Forms
             _logger.LogInformation("Загрузка компонент изделия");
             try
             {
-                if (_productComponents != null)
+                if (_travelComponents != null)
                 {
                     dataGridView.Rows.Clear();
-                    foreach (var pc in _productComponents)
+                    foreach (var pc in _travelComponents)
                     {
                         dataGridView.Rows.Add(new object[] { pc.Key, pc.Value.Item1.ComponentName, pc.Value.Item2 });
                     }
@@ -76,48 +78,41 @@ namespace TravelCompany.Forms
         }
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var service = Program.ServiceProvider?.GetService(typeof(FormTravelComponent));
-            if (service is FormTravelComponent form)
+            var form = DependencyManager.Instance.Resolve<FormTravelComponent>();
+            if (form.ShowDialog() == DialogResult.OK)
             {
+                return;
+            }
+            _logger.LogInformation("Добавление нового ингридиента:{ ComponentName}-{ Count}", form.ComponentModel.ComponentName, form.Count);
+            if (_travelComponents.ContainsKey(form.Id))
+            {
+                _travelComponents[form.Id] = (form.ComponentModel,
+                form.Count);
+            }
+            else
+            {
+                _travelComponents.Add(form.Id, (form.ComponentModel,
+                form.Count));
+            }
+            LoadData();
+        }
+        private void buttonUpd_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count == 1)
+            {
+                var form = DependencyManager.Instance.Resolve<FormTravelComponent>();
+                int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
+                form.Id = id;
+                form.Count = _travelComponents[id].Item2;
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     if (form.ComponentModel == null)
                     {
                         return;
                     }
-                    _logger.LogInformation("Добавление нового компонента: { ComponentName} - { Count} ", form.ComponentModel.ComponentName, form.Count);
-                    if (_productComponents.ContainsKey(form.Id))
-                    {
-                        _productComponents[form.Id] = (form.ComponentModel, form.Count);
-                    }
-                    else
-                    {
-                        _productComponents.Add(form.Id, (form.ComponentModel, form.Count));
-                    }
+                    _logger.LogInformation("Изменение ингридиента:{ ComponentName}-{ Count}", form.ComponentModel.ComponentName, form.Count);
+                    _travelComponents[form.Id] = (form.ComponentModel, form.Count);
                     LoadData();
-                }
-            }
-        }
-        private void buttonUpd_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.SelectedRows.Count == 1)
-            {
-                var service = Program.ServiceProvider?.GetService(typeof(FormTravelComponent));
-                if (service is FormTravelComponent form)
-                {
-                    int id = Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value);
-                    form.Id = id;
-                    form.Count = _productComponents[id].Item2;
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
-                        if (form.ComponentModel == null)
-                        {
-                            return;
-                        }
-                        _logger.LogInformation("Изменение компонента: { ComponentName} - { Count}", form.ComponentModel.ComponentName, form.Count);
-                        _productComponents[form.Id] = (form.ComponentModel, form.Count);
-                        LoadData();
-                    }
                 }
             }
         }
@@ -130,7 +125,7 @@ namespace TravelCompany.Forms
                     try
                     {
                         _logger.LogInformation("Удаление компонента: { ComponentName} - { Count}", dataGridView.SelectedRows[0].Cells[1].Value);
-                        _productComponents?.Remove(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
+                        _travelComponents?.Remove(Convert.ToInt32(dataGridView.SelectedRows[0].Cells[0].Value));
                     }
                     catch (Exception ex)
                     {
@@ -156,7 +151,7 @@ namespace TravelCompany.Forms
                 MessageBox.Show("Заполните цену", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (_productComponents == null || _productComponents.Count == 0)
+            if (_travelComponents == null || _travelComponents.Count == 0)
             {
                 MessageBox.Show("Заполните компоненты", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -169,7 +164,7 @@ namespace TravelCompany.Forms
                     Id = _id ?? 0,
                     TravelName = textBoxName.Text,
                     Price = Convert.ToDouble(textBoxPrice.Text),
-                    TravelComponents = _productComponents
+                    TravelComponents = _travelComponents
                 };
                 var operationResult = _id.HasValue ? _logic.Update(model) : _logic.Create(model);
                 if (!operationResult)
@@ -195,7 +190,7 @@ namespace TravelCompany.Forms
         private double CalcPrice()
         {
             double price = 0;
-            foreach (var elem in _productComponents)
+            foreach (var elem in _travelComponents)
             {
                 price += ((elem.Value.Item1?.Cost ?? 0) * elem.Value.Item2);
             }

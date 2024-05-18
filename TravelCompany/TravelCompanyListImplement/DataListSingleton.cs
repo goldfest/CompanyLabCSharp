@@ -1,4 +1,9 @@
 ﻿using TravelCompanyListImplement.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TravelCompanyListImplement
 {
@@ -21,6 +26,8 @@ namespace TravelCompanyListImplement
             Clients = new List<Client>(); 
             Implementers = new List<Implementer>();
             Messages = new List<MessageInfo>();
+
+
         }
         public static DataListSingleton GetInstance()
         {

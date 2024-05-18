@@ -25,6 +25,7 @@ namespace TravelCompanyFileImplement
         public List<Implementer> Implementers { get; private set; }
         public List<MessageInfo> Messages { get; private set; }
 
+
         public static DataFileSingleton GetInstance()
         {
             if (instance == null)
@@ -52,7 +53,6 @@ namespace TravelCompanyFileImplement
             Implementers = LoadData(ImplementerFileName, "Implementer", x =>
 Implementer.Create(x)!)!;
             Messages = LoadData(MessageInfoFileName, "MessageInfo", x => MessageInfo.Create(x)!)!;
-
 
         }
         private static List<T>? LoadData<T>(string filename, string xmlNodeName, Func<XElement, T> selectFunction)
