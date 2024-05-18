@@ -114,6 +114,7 @@ namespace TravelCompanyClientApp.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            var res = APIClient.GetRequest<List<TravelViewModel>>("api/main/getTravellist");
             ViewBag.Travels =
             APIClient.GetRequest<List<TravelViewModel>>("api/main/getTravellist");
             return View();
@@ -146,6 +147,17 @@ namespace TravelCompanyClientApp.Controllers
             APIClient.GetRequest<TravelViewModel>($"api/main/getTravel?Travelid={Travel}"
             );
             return Math.Round(count * (_Travel?.Price ?? 1), 2);
+        }
+
+        [HttpGet]
+        public IActionResult Mails()
+        {
+            if (APIClient.Client == null)
+            {
+                return Redirect("~/Home/Enter");
+            }
+            return
+            View(APIClient.GetRequest<List<MessageInfoViewModel>>($"api/client/getmessages?clientId={APIClient.Client.Id}"));
         }
     }
 }

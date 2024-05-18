@@ -11,11 +11,13 @@ namespace TravelCompanyRestApi.Controllers
     {
         private readonly ILogger _logger;
         private readonly IClientLogic _logic;
-        public ClientController(IClientLogic logic, ILogger<ClientController>
+        private readonly IMessageInfoLogic _mailLogic;
+        public ClientController(IClientLogic logic, IMessageInfoLogic mailLogic, ILogger<ClientController>
        logger)
         {
             _logger = logger;
             _logic = logic;
+            _mailLogic = mailLogic;
         }
         [HttpGet]
         public ClientViewModel? Login(string login, string password)
@@ -31,6 +33,23 @@ namespace TravelCompanyRestApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Ошибка входа в систему");
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public List<MessageInfoViewModel>? GetMessages(int clientId)
+        {
+            try
+            {
+                return _mailLogic.ReadList(new MessageInfoSearchModel
+                {
+                    ClientId = clientId
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ошибка получения писем клиента");
                 throw;
             }
         }

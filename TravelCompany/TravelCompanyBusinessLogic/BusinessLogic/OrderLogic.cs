@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelCompanyBusinessLogic.MailWorker;
 
 namespace TravelCompanyBusinessLogic.BusinessLogic
 {
@@ -17,12 +18,16 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
     {
         private readonly ILogger _logger;
         private readonly IOrderStorage _orderStorage;
+        private readonly AbstractMailWorker _mailWorker;
+        private readonly IClientLogic _clientLogic;
         static readonly object locker = new object();
 
-        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage)
+        public OrderLogic(ILogger<OrderLogic> logger, IOrderStorage orderStorage, AbstractMailWorker mailWorker, IClientLogic clientLogic)
         {
             _logger = logger;
             _orderStorage = orderStorage;
+            _mailWorker = mailWorker;
+            _clientLogic = clientLogic;
         }
 
         public OrderViewModel? ReadElement(OrderSearchModel model)
@@ -62,12 +67,15 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             if (model.Status != OrderStatus.Неизвестен)
                 return false;
             model.Status = OrderStatus.Принят;
+            var res = _orderStorage.Insert(model);
 
-            if (_orderStorage.Insert(model) == null)
+            if (res == null)
             {
                 _logger.LogWarning("Insert operation failed");
                 return false;
             }
+            SendOrderStatusMail(model.ClientId, $"Изменен статус заказа #{res.Id}", $"Заказ #{res.Id} изменен статус на {model.Status}");
+
             return true;
         }
 
@@ -107,7 +115,13 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
             if (model.Status == OrderStatus.Готов) model.DateImplement = DateTime.Now;
             if (element.ImplementerId.HasValue)
                 model.ImplementerId = element.ImplementerId;
-            _orderStorage.Update(model);
+            var result = _orderStorage.Update(model);
+            if (result == null)
+            {
+                _logger.LogWarning("Update operation failed");
+                return false;
+            }
+            SendOrderStatusMail(result.ClientId, $"Изменен статус заказа #{result.Id}", $"Заказ #{model.Id} изменен статус на {result.Status}");
             return true;
         }
 
@@ -130,6 +144,21 @@ namespace TravelCompanyBusinessLogic.BusinessLogic
                 throw new ArgumentNullException("Цена заказа должна быть больше 0", nameof(model.Sum));
             }
                 _logger.LogInformation("Travel. TravelId:{TravelId}.Count:{Count}.Sum:{Sum}Id:{Id}", model.TravelId, model.Count, model.Sum, model.Id);
+        }
+        private bool SendOrderStatusMail(int clientId, string subject, string text)
+        {
+            var client = _clientLogic.ReadElement(new() { Id = clientId });
+            if (client == null)
+            {
+                return false;
+            }
+            _mailWorker.MailSendAsync(new()
+            {
+                MailAddress = client.Email,
+                Subject = subject,
+                Text = text
+            });
+            return true;
         }
     }
 }

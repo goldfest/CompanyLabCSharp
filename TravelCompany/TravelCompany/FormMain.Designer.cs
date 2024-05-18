@@ -34,6 +34,7 @@
             компонентыToolStripMenuItem = new ToolStripMenuItem();
             ПутёвкиToolStripMenuItem = new ToolStripMenuItem();
             клиентыToolStripMenuItem = new ToolStripMenuItem();
+            исполнителиToolStripMenuItem = new ToolStripMenuItem();
             отчетыToolStripMenuItem = new ToolStripMenuItem();
             списокКомпонентовToolStripMenuItem = new ToolStripMenuItem();
             компонентыПоПутёвкамToolStripMenuItem = new ToolStripMenuItem();
@@ -45,7 +46,7 @@
             buttonIssuedOrder = new Button();
             buttonRef = new Button();
             dataGridView = new DataGridView();
-            исполнителиToolStripMenuItem = new ToolStripMenuItem();
+            почтаToolStripMenuItem = new ToolStripMenuItem();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -53,7 +54,7 @@
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, отчетыToolStripMenuItem, запускРаботToolStripMenuItem });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripDropDownButton1, отчетыToolStripMenuItem, запускРаботToolStripMenuItem, почтаToolStripMenuItem });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(969, 25);
@@ -90,6 +91,13 @@
             клиентыToolStripMenuItem.Size = new Size(180, 22);
             клиентыToolStripMenuItem.Text = "Клиенты";
             клиентыToolStripMenuItem.Click += клиентыToolStripMenuItem_Click;
+            // 
+            // исполнителиToolStripMenuItem
+            // 
+            исполнителиToolStripMenuItem.Name = "исполнителиToolStripMenuItem";
+            исполнителиToolStripMenuItem.Size = new Size(180, 22);
+            исполнителиToolStripMenuItem.Text = "Исполнители";
+            исполнителиToolStripMenuItem.Click += исполнителиToolStripMenuItem_Click;
             // 
             // отчетыToolStripMenuItem
             // 
@@ -188,12 +196,12 @@
             dataGridView.Size = new Size(763, 435);
             dataGridView.TabIndex = 6;
             // 
-            // исполнителиToolStripMenuItem
+            // почтаToolStripMenuItem
             // 
-            исполнителиToolStripMenuItem.Name = "исполнителиToolStripMenuItem";
-            исполнителиToolStripMenuItem.Size = new Size(180, 22);
-            исполнителиToolStripMenuItem.Text = "Исполнители";
-            исполнителиToolStripMenuItem.Click += исполнителиToolStripMenuItem_Click;
+            почтаToolStripMenuItem.Name = "почтаToolStripMenuItem";
+            почтаToolStripMenuItem.Size = new Size(53, 25);
+            почтаToolStripMenuItem.Text = "Почта";
+            почтаToolStripMenuItem.Click += почтаToolStripMenuItem_Click;
             // 
             // FormMain
             // 
@@ -236,5 +244,6 @@
         private ToolStripMenuItem клиентыToolStripMenuItem;
         private ToolStripMenuItem запускРаботToolStripMenuItem;
         private ToolStripMenuItem исполнителиToolStripMenuItem;
+        private ToolStripMenuItem почтаToolStripMenuItem;
     }
 }

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using TravelCompanyBusinessLogic.OfficePackage.Implements;
 using TravelCompanyBusinessLogic.OfficePackage;
+using TravelCompanyBusinessLogic.MailWorker;
+using TravelCompanyContracts.BindingModels;
 
 
 namespace TravelCompany.Forms
@@ -27,6 +29,37 @@ namespace TravelCompany.Forms
             var services = new ServiceCollection();
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
+            try
+            {
+                var mailSender =
+                _serviceProvider.GetService<AbstractMailWorker>();
+                mailSender?.MailConfig(new MailConfigBindingModel
+                {
+                    MailLogin =
+                System.Configuration.ConfigurationManager.AppSettings["MailLogin"] ??
+                string.Empty,
+                    MailPassword =
+                System.Configuration.ConfigurationManager.AppSettings["MailPassword"] ??
+                string.Empty,
+                    SmtpClientHost =
+                System.Configuration.ConfigurationManager.AppSettings["SmtpClientHost"] ??
+                string.Empty,
+                    SmtpClientPort =
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["SmtpClientPort"]),
+                    PopHost =
+                System.Configuration.ConfigurationManager.AppSettings["PopHost"] ?? string.Empty,
+                    PopPort =
+                Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings["PopPort"])
+                });
+                // создаем таймер
+                var timer = new System.Threading.Timer(new
+                TimerCallback(MailCheck!), null, 0, 100000);
+            }
+            catch (Exception ex)
+            {
+                var logger = _serviceProvider.GetService<ILogger>();
+                logger?.LogError(ex, "Ошибка работы с почтой");
+            }
 
             Application.Run(_serviceProvider.GetRequiredService<FormMain>());
         }
@@ -40,6 +73,7 @@ namespace TravelCompany.Forms
             services.AddTransient<IComponentStorage, ComponentStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<ITravelStorage, TravelStorage>();
+            services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
 
             services.AddTransient<IComponentLogic, ComponentLogic>();
             services.AddTransient<IOrderLogic, OrderLogic>();
@@ -50,6 +84,7 @@ namespace TravelCompany.Forms
             services.AddTransient<IImplementerLogic, ImplementerLogic>();
             services.AddTransient<IImplementerStorage, ImplementerStorage>();
             services.AddTransient<IWorkProcess, WorkModeling>();
+            services.AddTransient<IMessageInfoLogic, MessageInfoLogic>();
 
             services.AddTransient<FormMain>();
             services.AddTransient<FormComponent>();
@@ -63,10 +98,14 @@ namespace TravelCompany.Forms
             services.AddTransient<AbstractSaveToExcel, SaveToExcel>();
             services.AddTransient<AbstractSaveToWord, SaveToWord>();
             services.AddTransient<AbstractSaveToPdf, SaveToPdf>();
+            services.AddSingleton<AbstractMailWorker, MailKitWorker>();
             services.AddTransient<FormClients>();
             services.AddTransient<ImplementersForm>();
             services.AddTransient<ImplementerForm>();
+            services.AddTransient<FormViewMail>();
 
         }
+        private static void MailCheck(object obj) =>
+ServiceProvider?.GetService<AbstractMailWorker>()?.MailCheck();
     }
 }
